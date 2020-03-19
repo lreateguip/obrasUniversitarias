@@ -5,7 +5,7 @@
  */
 package dou;
 
-import dou.view.Principal;
+import vista.Principal;
 import javax.swing.JFrame;
 /**
  *

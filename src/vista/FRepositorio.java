@@ -1,4 +1,4 @@
-package dou.view;
+package vista;
 
 import java.awt.Component;
 import java.awt.Image;

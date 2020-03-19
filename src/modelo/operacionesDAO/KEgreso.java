@@ -5,7 +5,7 @@
  */
 package modelo.operacionesDAO;
 
-import Conexion.Conexion;
+import conexion.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

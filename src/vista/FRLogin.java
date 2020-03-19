@@ -1,4 +1,4 @@
-package dou.view;
+package vista;
 
 import java.awt.Event;
 import java.awt.Frame;

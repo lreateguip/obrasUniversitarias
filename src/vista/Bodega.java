@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dou.view;
+package vista;
 
 import com.toedter.calendar.JTextFieldDateEditor;
 import java.text.SimpleDateFormat;
@@ -778,7 +778,7 @@ public class Bodega extends javax.swing.JFrame {
         EGRESO.add(spnCantidad);
         spnCantidad.setBounds(210, 150, 70, 20);
         EGRESO.add(jdtFecha);
-        jdtFecha.setBounds(370, 70, 95, 20);
+        jdtFecha.setBounds(370, 70, 87, 20);
 
         jLabel20.setText("Fecha:");
         EGRESO.add(jLabel20);

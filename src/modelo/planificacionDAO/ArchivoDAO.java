@@ -5,7 +5,7 @@
  */
 package modelo.planificacionDAO;
 
-import Conexion.Conexion;
+import conexion.Conexion;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
