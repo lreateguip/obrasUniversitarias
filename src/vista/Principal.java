@@ -52,131 +52,151 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        btnJefaturaPlanificacion = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        pbl_principal = new javax.swing.JPanel();
+        btnBodega = new javax.swing.JButton();
+        btnPlanificacion = new javax.swing.JButton();
+        btnInfraestructura = new javax.swing.JButton();
+        btnFiscalizacion = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
+        btnDireccion = new javax.swing.JButton();
+        lbIconoUG = new javax.swing.JLabel();
+        lbTitulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PLAN PILOTO DE GESTION DE ARCHIVOS Y SEGUIMIENTO DE PROCESOS");
-        setBackground(new java.awt.Color(204, 255, 0));
-        setFont(new java.awt.Font("Microsoft YaHei", 1, 14)); // NOI18N
         setForeground(java.awt.Color.white);
         setIconImage(getIconImage());
         setIconImages(getIconImages());
         setLocation(new java.awt.Point(50, 50));
+        setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(153, 255, 153));
+        pbl_principal.setBackground(new java.awt.Color(0, 102, 255));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Inventario3_1.png"))); // NOI18N
-        jButton1.setText("BODEGA");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnBodega.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Inventario3_1.png"))); // NOI18N
+        btnBodega.setText("BODEGA");
+        btnBodega.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnBodegaActionPerformed(evt);
             }
         });
 
-        btnJefaturaPlanificacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/plan.png"))); // NOI18N
-        btnJefaturaPlanificacion.setText("JEFATURA \nDE PLANIFICACION\n\n");
-        btnJefaturaPlanificacion.addActionListener(new java.awt.event.ActionListener() {
+        btnPlanificacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/plan.png"))); // NOI18N
+        btnPlanificacion.setText("JEFATURA \nDE PLANIFICACION\n\n");
+        btnPlanificacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnJefaturaPlanificacionActionPerformed(evt);
+                btnPlanificacionActionPerformed(evt);
             }
         });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/infra.png"))); // NOI18N
-        jButton3.setText("JEFATURA DE INFRAESTRUCTURA");
+        btnInfraestructura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/infra.png"))); // NOI18N
+        btnInfraestructura.setText("JEFATURA DE INFRAESTRUCTURA");
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fisc.png"))); // NOI18N
-        jButton5.setText("JEFATURA DE FISCALIZACION");
+        btnFiscalizacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fisc.png"))); // NOI18N
+        btnFiscalizacion.setText("JEFATURA DE FISCALIZACION");
 
-        jButton6.setText("SALIR");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        btnSalir.setText("SALIR");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                btnSalirActionPerformed(evt);
             }
         });
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/grupo.png"))); // NOI18N
-        jButton4.setText("DIRECCIÓN D.I.O.U.");
+        btnDireccion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/grupo.png"))); // NOI18N
+        btnDireccion.setText("DIRECCIÓN D.I.O.U.");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(96, 96, 96)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton3)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(190, 190, 190)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnJefaturaPlanificacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(340, 340, 340)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 92, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton6)))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(66, 66, 66)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(btnJefaturaPlanificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(68, 68, 68)
-                .addComponent(jButton4)
-                .addGap(31, 31, 31)
-                .addComponent(jButton6)
-                .addContainerGap())
+        lbIconoUG.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbIconoUG.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Logo-UG.png"))); // NOI18N
+        lbIconoUG.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        lbTitulo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        lbTitulo.setForeground(new java.awt.Color(255, 255, 255));
+        lbTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbTitulo.setText("SISTEMA INTERNO DE OBRAS UNIVERSITARIAS UG");
+
+        javax.swing.GroupLayout pbl_principalLayout = new javax.swing.GroupLayout(pbl_principal);
+        pbl_principal.setLayout(pbl_principalLayout);
+        pbl_principalLayout.setHorizontalGroup(
+            pbl_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pbl_principalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pbl_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pbl_principalLayout.createSequentialGroup()
+                        .addComponent(lbTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(pbl_principalLayout.createSequentialGroup()
+                        .addGroup(pbl_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(pbl_principalLayout.createSequentialGroup()
+                                .addGroup(pbl_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnInfraestructura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnBodega, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbIconoUG, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pbl_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnFiscalizacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnPlanificacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(pbl_principalLayout.createSequentialGroup()
+                                .addComponent(btnDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(175, 175, 175)
+                                .addComponent(btnSalir)))
+                        .addGap(10, 10, 10))))
         );
 
-        btnJefaturaPlanificacion.getAccessibleContext().setAccessibleName("plan  ");
+        pbl_principalLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnBodega, btnDireccion, btnFiscalizacion, btnInfraestructura, btnPlanificacion});
+
+        pbl_principalLayout.setVerticalGroup(
+            pbl_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pbl_principalLayout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(lbTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pbl_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pbl_principalLayout.createSequentialGroup()
+                        .addGroup(pbl_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnFiscalizacion)
+                            .addComponent(btnInfraestructura, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pbl_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnPlanificacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBodega, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addComponent(lbIconoUG, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addGroup(pbl_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnDireccion, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(40, 40, 40))
+        );
+
+        btnPlanificacion.getAccessibleContext().setAccessibleName("plan  ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pbl_principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pbl_principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnBodegaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBodegaActionPerformed
         // TODO add your handling code here:
         Bodega bod = new Bodega();
         bod.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnBodegaActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
         Principal p = Principal.getFrame();
         p.setVisible(false);
         p.dispose();
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_btnSalirActionPerformed
 
-    private void btnJefaturaPlanificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJefaturaPlanificacionActionPerformed
+    private void btnPlanificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlanificacionActionPerformed
         if (venLogJefPla == null) {
             try {
                 venLogJefPla = new FRLogin(this, false);
@@ -187,7 +207,7 @@ public class Principal extends javax.swing.JFrame {
         } else {
             venLogJefPla.setVisible(true);
         }
-    }//GEN-LAST:event_btnJefaturaPlanificacionActionPerformed
+    }//GEN-LAST:event_btnPlanificacionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -226,13 +246,15 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnJefaturaPlanificacion;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton btnBodega;
+    private javax.swing.JButton btnDireccion;
+    private javax.swing.JButton btnFiscalizacion;
+    private javax.swing.JButton btnInfraestructura;
+    private javax.swing.JButton btnPlanificacion;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JLabel lbIconoUG;
+    private javax.swing.JLabel lbTitulo;
+    private javax.swing.JPanel pbl_principal;
     // End of variables declaration//GEN-END:variables
 }

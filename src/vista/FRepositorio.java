@@ -273,12 +273,12 @@ public class FRepositorio extends javax.swing.JFrame {
         setBounds(new java.awt.Rectangle(10, 10, 10, 10));
         setIconImage(getIconImage());
 
-        panel_principal.setBackground(new java.awt.Color(153, 255, 153));
+        panel_principal.setBackground(new java.awt.Color(0, 102, 255));
         panel_principal.setLayout(new java.awt.BorderLayout());
 
-        panel_titulo.setBackground(new java.awt.Color(0, 102, 255));
         panel_titulo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 2, true));
         panel_titulo.setForeground(new java.awt.Color(255, 255, 255));
+        panel_titulo.setOpaque(false);
         panel_titulo.setPreferredSize(new java.awt.Dimension(930, 80));
 
         lbtTitulo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -361,9 +361,9 @@ public class FRepositorio extends javax.swing.JFrame {
 
         panel_principal.add(panel_titulo, java.awt.BorderLayout.PAGE_START);
 
-        panel_datos.setBackground(new java.awt.Color(0, 102, 255));
         panel_datos.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 2, true));
         panel_datos.setForeground(new java.awt.Color(255, 255, 255));
+        panel_datos.setOpaque(false);
         panel_datos.setPreferredSize(new java.awt.Dimension(300, 464));
 
         btnBuscarArchivo.setText("Buscar archivos");
