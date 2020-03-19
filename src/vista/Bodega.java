@@ -6,6 +6,7 @@
 package vista;
 
 import Validaciones.Validaciones;
+import static com.sun.javafx.tk.Toolkit.getToolkit;
 import com.toedter.calendar.JTextFieldDateEditor;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -189,9 +190,9 @@ public class Bodega extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         cmbProducto = new javax.swing.JComboBox<>();
         btnIngresar = new javax.swing.JButton();
-        spnCantidad = new javax.swing.JSpinner();
         jdtFecha = new com.toedter.calendar.JDateChooser();
         jLabel20 = new javax.swing.JLabel();
+        txtCantidad = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
 
         jMenuItem1.setText("jMenuItem1");
@@ -773,22 +774,24 @@ public class Bodega extends javax.swing.JFrame {
             }
         });
         EGRESO.add(btnIngresar);
-        btnIngresar.setBounds(710, 140, 110, 30);
-
-        spnCantidad.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
-        spnCantidad.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                spnCantidadStateChanged(evt);
-            }
-        });
-        EGRESO.add(spnCantidad);
-        spnCantidad.setBounds(210, 150, 70, 20);
+        btnIngresar.setBounds(690, 110, 110, 30);
         EGRESO.add(jdtFecha);
-        jdtFecha.setBounds(370, 70, 87, 20);
+        jdtFecha.setBounds(360, 70, 130, 20);
 
         jLabel20.setText("Fecha:");
         EGRESO.add(jLabel20);
-        jLabel20.setBounds(390, 50, 40, 14);
+        jLabel20.setBounds(400, 50, 40, 14);
+
+        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyTyped(evt);
+            }
+        });
+        EGRESO.add(txtCantidad);
+        txtCantidad.setBounds(190, 150, 120, 20);
 
         jTabbedPane2.addTab("EGRESO MATERIAL", EGRESO);
 
@@ -905,9 +908,9 @@ public class Bodega extends javax.swing.JFrame {
             if (id_interno == listacantidades.get(i).getId()) {
             
                 txtValorUnitario.setText(String.valueOf(listacantidades.get(i).getValor_unitario()));
-               // txtCantidad.setText(String.valueOf(listacantidades.get(i).getCantidad()));
-                SpinnerModel sm = new SpinnerNumberModel(listacantidades.get(i).getCantidad(),1,listacantidades.get(i).getCantidad(),1);
-                spnCantidad.setModel(sm);
+                txtCantidad.setText(String.valueOf(listacantidades.get(i).getCantidad()));
+                //SpinnerModel sm = new SpinnerNumberModel(listacantidades.get(i).getCantidad(),1,listacantidades.get(i).getCantidad(),1);
+                //spnCantidad.setModel(sm);
                 //txtTotal.setText(String.valueOf(listacantidades.get(i).get));
                 //spnCantidad.setValue(listacantidades.get(i).getCantidad());
                 //SpinnerModel modelo = new SpinnerModel(i, i, i, i) {};
@@ -925,17 +928,17 @@ public class Bodega extends javax.swing.JFrame {
         //ord2[1]=txtDescripcion.getText();
         ord2[1] = cmbProducto.getSelectedItem().toString();
         //ord2[3]=txtFecha.getText();
-       // ord2[2] = txtCantidad.getText();
-       ord2[2]=spnCantidad.getValue();
+        ord2[2] = txtCantidad.getText();
+       //ord2[2]=spnCantidad.getValue();
         ord2[3] = txtValorUnitario.getText();
         ord2[4] = txtTotal.getText();
         //detalle.setId_egrepro(1);
         String opcion = cmbProducto.getSelectedItem().toString();
         String[] datos = opcion.split("-");
         detalle.setId_pro(Integer.parseInt(datos[0]));
-       // detalle.setCantidad(Integer.parseInt(txtCantidad.getText()));
-        String cant = String.valueOf(spnCantidad.getValue());
-        detalle.setCantidad(Integer.parseInt(cant));
+        detalle.setCantidad(Integer.parseInt(txtCantidad.getText()));
+        //String cant = String.valueOf(spnCantidad.getValue());
+        //detalle.setCantidad(Integer.parseInt(cant));
         detalle.setNo_orden(txtOrden.getText());
         detalle.setValoru(Double.parseDouble(txtValorUnitario.getText()));
         detalle.setTotal(Double.parseDouble(txtTotal.getText()));
@@ -980,9 +983,9 @@ public class Bodega extends javax.swing.JFrame {
     }*/
     private void calcularTotal() {
         double num_total = 0;
-        //num_total = Integer.parseInt(txtCantidad.getText()) * Double.parseDouble(txtValorUnitario.getText());
-        String cant2= String.valueOf(spnCantidad.getValue());
-        num_total = Integer.parseInt(cant2)*Double.parseDouble(txtValorUnitario.getText());
+        num_total = Integer.parseInt(txtCantidad.getText()) * Double.parseDouble(txtValorUnitario.getText());
+        //String cant2= String.valueOf(spnCantidad.getValue());
+        //num_total = Integer.parseInt(cant2)*Double.parseDouble(txtValorUnitario.getText());
         String cadena = String.format(Locale.US, "%5.2f", num_total);
         txtTotal.setText(cadena);
     }
@@ -990,13 +993,18 @@ public class Bodega extends javax.swing.JFrame {
     private void limpiar() {
         txtOrden.setText(null);
         txtDescripcion.setText(null);
-        //txtCantidad.setText("0");
+        txtCantidad.setText("0");
         txtValorUnitario.setText("0");
         txtTotal.setText(null);
         //txtFecha.setText(null);
         eliminar_tabla();
         //tblegresos.removeRowSelectionInterval(0, listadetalles.size());
 
+    }
+    private void limpiar_seleccione(){
+        txtCantidad.setText("0");
+        txtValorUnitario.setText("0");
+        txtTotal.setText(null);
     }
 
     private void eliminar_tabla() {
@@ -1060,6 +1068,7 @@ public class Bodega extends javax.swing.JFrame {
     private void cmbProductoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbProductoItemStateChanged
         // TODO add your handling code here:
         Validaciones.desactivar_boton(cmbProducto, btnIngresar); 
+        limpiar_seleccione();
         if(cmbProducto.getSelectedIndex()>0){
            cargar_valores();
         calcularTotal();
@@ -1074,10 +1083,21 @@ public class Bodega extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbProductoItemStateChanged
 
     
-    private void spnCantidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnCantidadStateChanged
+    private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyReleased
         // TODO add your handling code here:
+        if(txtCantidad.getText().isEmpty()){
+            txtCantidad.setText("0");
+        }
         calcularTotal();
-    }//GEN-LAST:event_spnCantidadStateChanged
+    }//GEN-LAST:event_txtCantidadKeyReleased
+
+    private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyTyped
+        // TODO add your handling code here:
+        char validar=evt.getKeyChar();
+        if(!Character.isDigit(validar)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCantidadKeyTyped
 
     /**
      * @param args the command line arguments
@@ -1178,9 +1198,9 @@ public class Bodega extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField9;
     private com.toedter.calendar.JDateChooser jdtFecha;
     private javax.swing.JPanel orden;
-    private javax.swing.JSpinner spnCantidad;
     private javax.swing.JTable tblOrden;
     private javax.swing.JTable tblegresos;
+    private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtOrden;
     private javax.swing.JTextField txtTotal;
