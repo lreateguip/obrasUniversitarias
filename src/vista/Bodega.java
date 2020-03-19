@@ -5,6 +5,7 @@
  */
 package vista;
 
+import Validaciones.Validaciones;
 import com.toedter.calendar.JTextFieldDateEditor;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,10 +37,15 @@ public class Bodega extends javax.swing.JFrame {
         modelo_tabla();
         cargar_productos();
         editor_fecha();
+        btnIngresar.setEnabled(false);
+        
+        
         //cargar_orden();
         //cargar_inv();
         // cargar_egresos();
     }
+    
+    
     ArrayList<Ekardex> listaegresos;
     ArrayList<Ikardex> listar;
     ArrayList<Orden> lista;
@@ -880,6 +886,7 @@ public class Bodega extends javax.swing.JFrame {
         listaproductos = consultadao3.llenar_combo();
           String[] items = new String[listaproductos.size()+1];
         cmbProducto.removeAllItems();
+        
        
         items[0]="Seleccione";
         for (int i = 0; i < listaproductos.size(); i++) {
@@ -943,7 +950,7 @@ public class Bodega extends javax.swing.JFrame {
             ord2[4] = productos.get(i).getTot();*/
         modelo2.addRow(ord2);
         //cargar_productos();
-
+        
         // }
         //System.out.println("Ejecutado cargar egresos");
         //tblegresos.setModel(modelo2);
@@ -1052,15 +1059,21 @@ public class Bodega extends javax.swing.JFrame {
 
     private void cmbProductoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbProductoItemStateChanged
         // TODO add your handling code here:
+        Validaciones.desactivar_boton(cmbProducto, btnIngresar); 
         if(cmbProducto.getSelectedIndex()>0){
            cargar_valores();
         calcularTotal();
         listacantidades = new ArrayList<Producto>(); 
         }
         
+        
+        
+        
+        
 
     }//GEN-LAST:event_cmbProductoItemStateChanged
 
+    
     private void spnCantidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnCantidadStateChanged
         // TODO add your handling code here:
         calcularTotal();
