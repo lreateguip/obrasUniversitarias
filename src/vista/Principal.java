@@ -25,13 +25,15 @@ public class Principal extends javax.swing.JFrame {
 
     private Principal() {
         initComponents();
+        setResizable(false);
+        setLocationRelativeTo(null);
     }
 
     //CONFIGURAR EL ICONO DEL JFRAME REPOSITORIO
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
-                getImage(ClassLoader.getSystemResource("images/UGlogo.png"));
+                getImage(ClassLoader.getSystemResource("images/Logo-UG.png"));
         return retValue;
     }
 
@@ -66,12 +68,11 @@ public class Principal extends javax.swing.JFrame {
         setTitle("PLAN PILOTO DE GESTION DE ARCHIVOS Y SEGUIMIENTO DE PROCESOS");
         setForeground(java.awt.Color.white);
         setIconImage(getIconImage());
-        setIconImages(getIconImages());
         setLocation(new java.awt.Point(50, 50));
-        setResizable(false);
 
         pbl_principal.setBackground(new java.awt.Color(0, 102, 255));
 
+        btnBodega.setBackground(new java.awt.Color(255, 255, 255));
         btnBodega.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Inventario3_1.png"))); // NOI18N
         btnBodega.setText("BODEGA");
         btnBodega.addActionListener(new java.awt.event.ActionListener() {
@@ -80,6 +81,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        btnPlanificacion.setBackground(new java.awt.Color(255, 255, 255));
         btnPlanificacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/plan.png"))); // NOI18N
         btnPlanificacion.setText("JEFATURA \nDE PLANIFICACION\n\n");
         btnPlanificacion.addActionListener(new java.awt.event.ActionListener() {
@@ -88,12 +90,16 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        btnInfraestructura.setBackground(new java.awt.Color(255, 255, 255));
         btnInfraestructura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/infra.png"))); // NOI18N
         btnInfraestructura.setText("JEFATURA DE INFRAESTRUCTURA");
 
+        btnFiscalizacion.setBackground(new java.awt.Color(255, 255, 255));
         btnFiscalizacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fisc.png"))); // NOI18N
         btnFiscalizacion.setText("JEFATURA DE FISCALIZACION");
 
+        btnSalir.setBackground(new java.awt.Color(255, 0, 0));
+        btnSalir.setForeground(new java.awt.Color(255, 255, 255));
         btnSalir.setText("SALIR");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,6 +107,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        btnDireccion.setBackground(new java.awt.Color(255, 255, 255));
         btnDireccion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/grupo.png"))); // NOI18N
         btnDireccion.setText("DIRECCIÓN D.I.O.U.");
 

@@ -62,20 +62,23 @@ public class FRLogin extends javax.swing.JDialog {
         setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         setResizable(false);
 
+        pnl_login.setBackground(new java.awt.Color(0, 102, 255));
         pnl_login.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
         pnl_login.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
         lblImagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/loginJefPla.png"))); // NOI18N
-        lblImagen.setOpaque(true);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED), "Acceso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED), "Acceso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel1.setOpaque(false);
 
         jLabel2.setFont(pnl_login.getFont());
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/login16.png"))); // NOI18N
         jLabel2.setText("Usuario:");
 
         jLabel3.setFont(pnl_login.getFont());
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pass16.png"))); // NOI18N
         jLabel3.setText("Clave:");
 
