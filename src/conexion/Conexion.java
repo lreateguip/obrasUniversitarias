@@ -6,10 +6,17 @@ import javax.swing.JOptionPane;
 
 public class Conexion {
     private  Connection conection;
-        //Parametros de Conexion
-	final String cadenaConexion="jdbc:mysql://localhost:3306/diou";
-	final String User="root";
-	final String password="";
+        //Parametros de Conexion servidor
+        final String BD = "id12973800_diou";
+	final String User="id12973800_obras";
+        final String password="obrasUniversitarias";
+        
+        //parametros de conexión local
+        //final String BD = "diou";
+	//final String User="root";
+	//final String password="";
+
+        final String cadenaConexion="jdbc:mysql://localhost:3306/"+BD;
 	//constructor para la clase
 	public Conexion(){
 		this.conection=null;
