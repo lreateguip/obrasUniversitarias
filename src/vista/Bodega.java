@@ -39,6 +39,7 @@ public class Bodega extends javax.swing.JFrame {
         cargar_productos();
         editor_fecha();
         btnIngresar.setEnabled(false);
+        txtCantidad.setEditable(false);
         
         
         //cargar_orden();
@@ -1005,6 +1006,7 @@ public class Bodega extends javax.swing.JFrame {
         txtCantidad.setText("0");
         txtValorUnitario.setText("0");
         txtTotal.setText(null);
+        txtCantidad.setEditable(false);
     }
 
     private void eliminar_tabla() {
@@ -1034,7 +1036,9 @@ public class Bodega extends javax.swing.JFrame {
         for (int i = 0; i < listadetalles.size(); i++) {
             KEgreso egreso = new KEgreso();
             egreso.guardarDetalle(listadetalles.get(i));
+            egreso.actualizarInventario(listadetalles.get(i));
         }
+        
         // insertar_ingreso();
         //cargar_egresos();
         // limpiar();
@@ -1071,6 +1075,7 @@ public class Bodega extends javax.swing.JFrame {
         limpiar_seleccione();
         if(cmbProducto.getSelectedIndex()>0){
            cargar_valores();
+           txtCantidad.setEditable(true);
         calcularTotal();
         listacantidades = new ArrayList<Producto>(); 
         }

@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import modelo.bodegaDTO.DetalleEgresoProducto;
 import modelo.bodegaDTO.Ekardex;
+import modelo.bodegaDTO.Producto;
 
 /**
  *
@@ -85,5 +86,37 @@ public class KEgreso {
             }
         }
         return res;
+    }
+    
+    public int actualizarInventario( DetalleEgresoProducto regreso){
+        int res=0;
+        micon = new Conexion();
+        //obtener la conexion a la bdd
+        con = micon.getConection();
+        //sentencia de inserción
+        String sql = "update producto set cantidad=cantidad-? where id_producto=?";
+                  
+
+        try {
+            //crear la sentencia preparada
+            sentenciaPreparada = con.prepareStatement(sql);
+            sentenciaPreparada.setInt(1, regreso.getCantidad());
+            sentenciaPreparada.setInt(2, regreso.getId_pro());
+            res = sentenciaPreparada.executeUpdate();
+
+        } catch (SQLException sqle) {
+            System.out.println("Error en guardar ");
+            System.out.println(sqle.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException sqle) {
+                System.out.println("Error al cerrar conexion");
+                System.out.println(sqle.getMessage());
+            }
+        }
+        
+        return res;
+        
     }
 }
