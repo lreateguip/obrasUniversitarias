@@ -18,11 +18,13 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 import modelo.bodegaDTO.Ekardex;
 import modelo.bodegaDTO.DetalleEgresoProducto;
+import modelo.bodegaDTO.DetalleIngresoProducto;
 import modelo.bodegaDTO.Ikardex;
 import modelo.bodegaDTO.Orden;
 import modelo.bodegaDTO.Producto;
 import modelo.operacionesDAO.Consulta;
 import modelo.operacionesDAO.KEgreso;
+import modelo.operacionesDAO.KIngreso;
 
 /**
  *
@@ -35,87 +37,37 @@ public class Bodega extends javax.swing.JFrame {
      */
     public Bodega() {
         initComponents();
+        
+        //Egreso de Materiales
         modelo_tabla();
         cargar_productos();
         editor_fecha();
         btnIngresar.setEnabled(false);
         txtCantidad.setEditable(false);
         
+        //Ingreso de Materiales
+        modelo_tablaI();
+        cargar_productosI();
+        editor_fechaI();
+        btnIngresarI.setEnabled(false);
+        txtCantidadI.setEditable(false);
         
-        //cargar_orden();
-        //cargar_inv();
-        // cargar_egresos();
+
     }
     
     
     ArrayList<Ekardex> listaegresos;
-    ArrayList<Ikardex> listar;
+    ArrayList<Ikardex> listaingresos;
+    
     ArrayList<Orden> lista;
+    
     ArrayList<DetalleEgresoProducto> listadetalles = new ArrayList<>();
+    ArrayList<DetalleIngresoProducto> listadetallesI = new ArrayList<>();
+    
     ArrayList<Producto> listaproductos;
     ArrayList<Producto> listacantidades;
 
-    /*private void cargar_orden() {
-        Consulta consultadao = new Consulta();
-        lista = consultadao.consulta_ord();
-        // mostar la lista de productos en el jTable
-        DefaultTableModel modelo = new DefaultTableModel();
-        String[] columnas = {"No.Orden", "detalle", "hora_llegada", "hora_salida", "estado"};
-        modelo.setColumnIdentifiers(columnas);
-        Object[] ord = new Object[5];
-        
-        for (int i = 0; i < lista.size(); i++) {
-            ord[0] = lista.get(i).getId();
-            ord[1] = lista.get(i).getDetalle();
-            ord[2] = lista.get(i).getSalida();
-            ord[3] = lista.get(i).getLlegada();
-            ord[4] = lista.get(i).getEstado();
-            modelo.addRow(ord);
-            
-        }
-        System.out.println("Ejecutado cargar orden");
-        tblOrden.setModel(modelo);
-    }
-
-    private void cargar_inv() {
-        Consulta consultadao = new Consulta();
-        listar = consultadao.consulta_inv();
-        // mostar la lista de productos en el jTable
-        DefaultTableModel modelo = new DefaultTableModel();
-        String[] columnas = {"id", "descripcion", "cantidad"};
-        modelo.setColumnIdentifiers(columnas);
-        Object[] reserv = new Object[3];
-        for (int i = 0; i < listar.size(); i++) {
-            reserv[0] = listar.get(i).getId();
-            reserv[1] = listar.get(i).getDesc();
-            reserv[2] = listar.get(i).getCantidad();
-            modelo.addRow(reserv);
-        }
-        jTable3.setModel(modelo);
-    }
-     */
- /*private void cargar_egresos(){
-        Consulta consultadao2 = new Consulta();
-        listaegresos = consultadao2.consulta_egresos();
-        // mostar la lista de productos en el jTable
-        DefaultTableModel modelo2 = new DefaultTableModel();
-        String[] columnas2 = {"No.Orden", "Descripcion", "Cantidad", "Valor U", "Total"};
-        modelo2.setColumnIdentifiers(columnas2);
-        Object[] ord2 = new Object[5];
-        
-        for (int i = 0; i < listaegresos.size(); i++) {
-            ord2[0] = listaegresos.get(i).getNumreq();
-            ord2[1] = listaegresos.get(i).getDescripcion();
-            ord2[2] = listaegresos.get(i).getCant();
-            ord2[3] = listaegresos.get(i).getValorU();
-            ord2[4] = listaegresos.get(i).getTot();
-            modelo2.addRow(ord2);
-            
-        }
-        System.out.println("Ejecutado cargar egresos");
-        tblegresos.setModel(modelo2);
-        
-    }*/
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -527,6 +479,11 @@ public class Bodega extends javax.swing.JFrame {
         tblIngresos.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         btnSubirOrdenI.setText("Subir Orden");
+        btnSubirOrdenI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubirOrdenIActionPerformed(evt);
+            }
+        });
 
         jLabel18.setText("No de Orden:");
 
@@ -538,15 +495,37 @@ public class Bodega extends javax.swing.JFrame {
 
         jLabel24.setText("Cantidad:");
 
+        txtCantidadI.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCantidadIKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantidadIKeyTyped(evt);
+            }
+        });
+
         jLabel25.setText("ValorUnitario:");
 
         txtValorUnitarioI.setEditable(false);
+        txtValorUnitarioI.setText("0.0");
 
         jLabel26.setText("Total Asignado:");
 
         txtTotalI.setEditable(false);
+        txtTotalI.setText("0.0");
 
         btnIngresarI.setText("Ingresar");
+        btnIngresarI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIngresarIActionPerformed(evt);
+            }
+        });
+
+        cmbProductoI.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbProductoIItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -562,21 +541,23 @@ public class Bodega extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1005, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(67, 67, 67)
-                        .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(84, 84, 84)
-                        .addComponent(jLabel24)
-                        .addGap(143, 143, 143)
-                        .addComponent(jLabel25))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(txtOrdenI, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(217, 217, 217)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtValorUnitarioI)
+                                    .addComponent(jdtFechaI, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)))
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel5Layout.createSequentialGroup()
                                         .addGap(27, 27, 27)
                                         .addComponent(jLabel18))
-                                    .addComponent(cmbProductoI, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(cmbProductoI, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel5Layout.createSequentialGroup()
+                                        .addGap(30, 30, 30)
+                                        .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(27, 27, 27)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel5Layout.createSequentialGroup()
@@ -590,21 +571,19 @@ public class Bodega extends javax.swing.JFrame {
                                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                                     .addComponent(txtCantidadI, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
                                                     .addComponent(txtDescripcionI, javax.swing.GroupLayout.Alignment.LEADING))
-                                                .addGap(243, 243, 243)
+                                                .addGap(244, 244, 244)
                                                 .addComponent(txtTotalI, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                .addGap(39, 39, 39)
+                                                .addComponent(jLabel24)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabel25)
+                                                .addGap(105, 105, 105)
                                                 .addComponent(jLabel26)
                                                 .addGap(92, 92, 92)))
                                         .addComponent(btnIngresarI, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(164, 164, 164))))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(txtOrdenI, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(217, 217, 217)
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtValorUnitarioI)
-                                    .addComponent(jdtFechaI, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE))))))
+                                        .addGap(164, 164, 164)))))))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -626,8 +605,8 @@ public class Bodega extends javax.swing.JFrame {
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel23)
                             .addComponent(jLabel24)
-                            .addComponent(jLabel25)
-                            .addComponent(jLabel26)))
+                            .addComponent(jLabel26)
+                            .addComponent(jLabel25)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addComponent(btnIngresarI, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1000,6 +979,56 @@ public class Bodega extends javax.swing.JFrame {
             }
         }
     }
+    
+    private void editor_fechaI(){
+        //JDateChooser chooser = new JDateChooser();
+        JTextFieldDateEditor editor = (JTextFieldDateEditor) jdtFechaI.getDateEditor();
+        editor.setEditable(false);
+        
+    }
+    private void modelo_tablaI() {
+        //ArrayList <EgresoProducto> productos;
+        DetalleIngresoProducto newproducto = new DetalleIngresoProducto();
+        DefaultTableModel modelo2 = new DefaultTableModel();
+        String[] columnas2 = {"No de Orden", "Descripcion", "Producto", "Fecha", "Cantidad", "Valor U", "Total"};
+        modelo2.setColumnIdentifiers(columnas2);
+    }
+
+    private void cargar_productosI() {
+        Consulta consultadao3 = new Consulta();
+      
+        listaproductos = consultadao3.llenar_combo();
+          String[] items = new String[listaproductos.size()+1];
+        cmbProductoI.removeAllItems();
+        
+       
+        items[0]="Seleccione";
+        for (int i = 0; i < listaproductos.size(); i++) {
+            items[i+1]=listaproductos.get(i).toString();
+        }
+        cmbProductoI.setModel(new DefaultComboBoxModel<>(items));
+    }
+
+    private void cargar_valoresI() {
+        Consulta consultadao4 = new Consulta();
+        listacantidades = consultadao4.llenar_valores();
+        String opcion2 = cmbProductoI.getSelectedItem().toString();
+        String[] datos = opcion2.split("-");
+        int id_interno = Integer.parseInt(datos[0]);
+        for (int i = 0; i < listacantidades.size(); i++) {
+            if (id_interno == listacantidades.get(i).getId()) {
+            
+                txtValorUnitarioI.setText(String.valueOf(listacantidades.get(i).getValor_unitario()));
+                txtCantidadI.setText(String.valueOf(listacantidades.get(i).getCantidad()));
+                //SpinnerModel sm = new SpinnerNumberModel(listacantidades.get(i).getCantidad(),1,listacantidades.get(i).getCantidad(),1);
+                //spnCantidad.setModel(sm);
+                //txtTotal.setText(String.valueOf(listacantidades.get(i).get));
+                //spnCantidad.setValue(listacantidades.get(i).getCantidad());
+                //SpinnerModel modelo = new SpinnerModel(i, i, i, i) {};
+                //spnCantidad.getModel();
+            }
+        }
+    }
 
     private void insertar_ingreso() {
         DefaultTableModel modelo2 = (DefaultTableModel) tblegresos.getModel();
@@ -1026,43 +1055,39 @@ public class Bodega extends javax.swing.JFrame {
         detalle.setTotal(Double.parseDouble(txtTotal.getText()));
 
         listadetalles.add(detalle);
-
-        //for (int i = 0; i < listaegresos.size(); i++) {
-        /*ord2[0] = productos.get(i).getNumreq();
-            ord2[1] = productos.get(i).getDescripcion();
-            ord2[2] = productos.get(i).getCant();
-            ord2[3] = productos.get(i).getValorU();
-            ord2[4] = productos.get(i).getTot();*/
         modelo2.addRow(ord2);
-        //cargar_productos();
         
-        // }
-        //System.out.println("Ejecutado cargar egresos");
-        //tblegresos.setModel(modelo2);
-        /*EgresoProducto producto = new EgresoProducto(txtOrden.getText());
-        producto.setCantidad(Integer.parseInt(txtCantidad.getText()));
-        producto.setValoru(Double.parseDouble(txtValorUnitario.getText()));
-        producto.setTotal(Double.parseDouble(txtTotal.getText()));*/
     }
+    
+    private void insertar_ingresoI() {
+        DefaultTableModel modelo2 = (DefaultTableModel) tblIngresos.getModel();
+        DetalleIngresoProducto detalle = new DetalleIngresoProducto();
+        Object[] ord2 = new Object[7];
 
-    /*private void cargar_tabla(){
+        ord2[0] = txtOrdenI.getText();
+        //ord2[1]=txtDescripcion.getText();
+        ord2[1] = cmbProductoI.getSelectedItem().toString();
+        //ord2[3]=txtFecha.getText();
+        ord2[2] = txtCantidadI.getText();
+       //ord2[2]=spnCantidad.getValue();
+        ord2[3] = txtValorUnitarioI.getText();
+        ord2[4] = txtTotalI.getText();
+        //detalle.setId_egrepro(1);
+        String opcion = cmbProductoI.getSelectedItem().toString();
+        String[] datos = opcion.split("-");
+        detalle.setId_pro(Integer.parseInt(datos[0]));
+        detalle.setCantidad(Integer.parseInt(txtCantidadI.getText()));
+        //String cant = String.valueOf(spnCantidad.getValue());
+        //detalle.setCantidad(Integer.parseInt(cant));
+        detalle.setNo_orden(txtOrdenI.getText());
+        detalle.setValoru(Double.parseDouble(txtValorUnitarioI.getText()));
+        detalle.setTotal(Double.parseDouble(txtTotalI.getText()));
+
+        listadetallesI.add(detalle);
+        modelo2.addRow(ord2);
         
-    }*/
- /*private void insertar_orden(){
-        //double num_total=0;
-        //Consulta consultadao = new Consulta();
-        Dkardex kardex = new Dkardex();
-        kardex.setNumreq(Integer.parseInt(txtOrden.getText()));
-        kardex.setDescripcion(txtDescripcion.getText());
-        kardex.setFecha(txtFecha.getText());
-        
-        //kardex.setCant(Integer.parseInt(txtCantidad.getText()));
-        //kardex.setValorU(Double.parseDouble(txtValorUnitario.getText()));
-        //kardex.setTot(Double.parseDouble(txtTotal.getText()));
-        KEgreso egreso = new KEgreso();
-        egreso.guardar(kardex);
-        
-    }*/
+    }
+    
     private void calcularTotal() {
         double num_total = 0;
         num_total = Integer.parseInt(txtCantidad.getText()) * Double.parseDouble(txtValorUnitario.getText());
@@ -1089,9 +1114,48 @@ public class Bodega extends javax.swing.JFrame {
         txtTotal.setText(null);
         txtCantidad.setEditable(false);
     }
+    
+    private void calcularTotalI() {
+        double num_total = 0;
+        num_total = Integer.parseInt(txtCantidadI.getText()) * Double.parseDouble(txtValorUnitarioI.getText());
+        //String cant2= String.valueOf(spnCantidad.getValue());
+        //num_total = Integer.parseInt(cant2)*Double.parseDouble(txtValorUnitario.getText());
+        String cadena = String.format(Locale.US, "%5.2f", num_total);
+        txtTotalI.setText(cadena);
+    }
+
+    private void limpiarI() {
+        txtOrdenI.setText(null);
+        txtDescripcionI.setText(null);
+        txtCantidadI.setText("0");
+        txtValorUnitarioI.setText("0");
+        txtTotalI.setText(null);
+        //txtFecha.setText(null);
+        eliminar_tablaI();
+        //tblegresos.removeRowSelectionInterval(0, listadetalles.size());
+
+    }
+    private void limpiar_seleccioneI(){
+        txtCantidadI.setText("0");
+        txtValorUnitarioI.setText("0");
+        txtTotalI.setText(null);
+        txtCantidadI.setEditable(false);
+    }
 
     private void eliminar_tabla() {
         DefaultTableModel modelo = (DefaultTableModel) tblegresos.getModel();
+        int filas = modelo.getRowCount();
+        for (int i = 0; i < filas; i++) {
+            modelo.removeRow(0);
+            /*int prueba=tblegresos.getModel().getRowCount();
+            System.out.println(prueba);*/
+            
+        }
+
+    }
+    
+    private void eliminar_tablaI() {
+        DefaultTableModel modelo = (DefaultTableModel) tblIngresos.getModel();
         int filas = modelo.getRowCount();
         for (int i = 0; i < filas; i++) {
             modelo.removeRow(0);
@@ -1160,14 +1224,9 @@ public class Bodega extends javax.swing.JFrame {
         calcularTotal();
         listacantidades = new ArrayList<Producto>(); 
         }
-        
-        
-        
-        
-        
-
     }//GEN-LAST:event_cmbProductoItemStateChanged
-
+    
+    
     
     private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyReleased
         // TODO add your handling code here:
@@ -1177,6 +1236,7 @@ public class Bodega extends javax.swing.JFrame {
         calcularTotal();
     }//GEN-LAST:event_txtCantidadKeyReleased
 
+    
     private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyTyped
         // TODO add your handling code here:
         char validar=evt.getKeyChar();
@@ -1184,7 +1244,8 @@ public class Bodega extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_txtCantidadKeyTyped
-
+    
+    
     private void INGRESOMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_INGRESOMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_INGRESOMouseClicked
@@ -1196,6 +1257,65 @@ public class Bodega extends javax.swing.JFrame {
     private void jTabbedPane2AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jTabbedPane2AncestorAdded
         // TODO add your handling code here:
     }//GEN-LAST:event_jTabbedPane2AncestorAdded
+
+    private void btnSubirOrdenIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubirOrdenIActionPerformed
+        // TODO add your handling code here:
+        KIngreso egreso2 = new KIngreso();
+        Ikardex cabezera = new Ikardex();
+        cabezera.setNumreq(txtOrdenI.getText());
+        //cabezera.setFecha(txtFecha.getText());
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        cabezera.setFecha(formato.format(jdtFechaI.getDate()));
+        //System.out.println(cabezera.getFecha());
+        cabezera.setDescripcion(txtDescripcionI.getText());
+        cabezera.setEstado("A");
+        egreso2.guardar(cabezera);
+        for (int i = 0; i < listadetallesI.size(); i++) {
+            KIngreso egreso = new KIngreso();
+            egreso.guardarDetalle(listadetallesI.get(i));
+            egreso.actualizarInventario(listadetallesI.get(i));
+        }
+        
+        // insertar_ingreso();
+        //cargar_egresos();
+        // limpiar();
+        listadetallesI = new ArrayList<>();
+
+        limpiarI();
+    }//GEN-LAST:event_btnSubirOrdenIActionPerformed
+
+    private void btnIngresarIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarIActionPerformed
+        // TODO add your handling code here:
+        insertar_ingresoI();
+    }//GEN-LAST:event_btnIngresarIActionPerformed
+
+    private void cmbProductoIItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbProductoIItemStateChanged
+        // TODO add your handling code here:
+        Validaciones.desactivar_boton(cmbProductoI, btnIngresarI); 
+        limpiar_seleccioneI();
+        if(cmbProductoI.getSelectedIndex()>0){
+           cargar_valoresI();
+           txtCantidadI.setEditable(true);
+        calcularTotalI();
+        listacantidades = new ArrayList<Producto>(); 
+        }
+    }//GEN-LAST:event_cmbProductoIItemStateChanged
+
+    private void txtCantidadIKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadIKeyReleased
+        // TODO add your handling code here:
+        if(txtCantidadI.getText().isEmpty()){
+            txtCantidadI.setText("0");
+        }
+        calcularTotalI();
+    }//GEN-LAST:event_txtCantidadIKeyReleased
+
+    private void txtCantidadIKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadIKeyTyped
+        // TODO add your handling code here:
+        char validar=evt.getKeyChar();
+        if(!Character.isDigit(validar)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCantidadIKeyTyped
 
     /**
      * @param args the command line arguments
@@ -1231,7 +1351,68 @@ public class Bodega extends javax.swing.JFrame {
             }
         });
     }
+    /*private void cargar_orden() {
+        Consulta consultadao = new Consulta();
+        lista = consultadao.consulta_ord();
+        // mostar la lista de productos en el jTable
+        DefaultTableModel modelo = new DefaultTableModel();
+        String[] columnas = {"No.Orden", "detalle", "hora_llegada", "hora_salida", "estado"};
+        modelo.setColumnIdentifiers(columnas);
+        Object[] ord = new Object[5];
+        
+        for (int i = 0; i < lista.size(); i++) {
+            ord[0] = lista.get(i).getId();
+            ord[1] = lista.get(i).getDetalle();
+            ord[2] = lista.get(i).getSalida();
+            ord[3] = lista.get(i).getLlegada();
+            ord[4] = lista.get(i).getEstado();
+            modelo.addRow(ord);
+            
+        }
+        System.out.println("Ejecutado cargar orden");
+        tblOrden.setModel(modelo);
+    }
 
+    private void cargar_inv() {
+        Consulta consultadao = new Consulta();
+        listar = consultadao.consulta_inv();
+        // mostar la lista de productos en el jTable
+        DefaultTableModel modelo = new DefaultTableModel();
+        String[] columnas = {"id", "descripcion", "cantidad"};
+        modelo.setColumnIdentifiers(columnas);
+        Object[] reserv = new Object[3];
+        for (int i = 0; i < listar.size(); i++) {
+            reserv[0] = listar.get(i).getId();
+            reserv[1] = listar.get(i).getDesc();
+            reserv[2] = listar.get(i).getCantidad();
+            modelo.addRow(reserv);
+        }
+        jTable3.setModel(modelo);
+    }
+     */
+ /*private void cargar_egresos(){
+        Consulta consultadao2 = new Consulta();
+        listaegresos = consultadao2.consulta_egresos();
+        // mostar la lista de productos en el jTable
+        DefaultTableModel modelo2 = new DefaultTableModel();
+        String[] columnas2 = {"No.Orden", "Descripcion", "Cantidad", "Valor U", "Total"};
+        modelo2.setColumnIdentifiers(columnas2);
+        Object[] ord2 = new Object[5];
+        
+        for (int i = 0; i < listaegresos.size(); i++) {
+            ord2[0] = listaegresos.get(i).getNumreq();
+            ord2[1] = listaegresos.get(i).getDescripcion();
+            ord2[2] = listaegresos.get(i).getCant();
+            ord2[3] = listaegresos.get(i).getValorU();
+            ord2[4] = listaegresos.get(i).getTot();
+            modelo2.addRow(ord2);
+            
+        }
+        System.out.println("Ejecutado cargar egresos");
+        tblegresos.setModel(modelo2);
+        
+    }*/
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel EGRESO;
     private javax.swing.JPanel INGRESO;

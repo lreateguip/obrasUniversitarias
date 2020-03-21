@@ -26,7 +26,7 @@ public class Consulta {
     private ResultSet resultset;
     private Conexion micon;
 
-    public ArrayList<Ikardex> consulta_inv() {
+   /* public ArrayList<Ikardex> consulta_inv() {
         ArrayList<Ikardex> listar = null;
         micon = new Conexion();
         con = micon.getConection();
@@ -64,7 +64,7 @@ public class Consulta {
         }
         return listar;
     }
-
+*/
     public ArrayList<Orden> consulta_ord() {
         ArrayList<Orden> listar = null;
         micon = new Conexion();

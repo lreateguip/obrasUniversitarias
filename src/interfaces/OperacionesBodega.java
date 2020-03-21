@@ -24,7 +24,7 @@ public class OperacionesBodega {
         this.lista = lista;
     }
     
-     public Ikardex buscar(String codigo){
+     /*public Ikardex buscar(String codigo){
         for(Ikardex I : lista){
             if(I.getId().equals(codigo)){
                 JOptionPane.showInputDialog(null,I.toString());
@@ -35,6 +35,6 @@ public class OperacionesBodega {
             }
         }
         return null;
-        }
+        }*/
     
 }
