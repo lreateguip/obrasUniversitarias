@@ -182,6 +182,89 @@ public class Consulta {
          
     }
     
+    public ArrayList<Producto> consulta_productos(){
+        ArrayList <Producto> listar = null;
+        micon = new Conexion();
+        con = micon.getConection();
+        if (con == null) {
+            return null;
+        }
+        String query = "select id_producto, descripcion, tipo_producto, cantidad, casa_comercial, valor_uni from producto";
+        try{
+            sentenciaPreparada = con.prepareStatement(query);
+            resultset = sentenciaPreparada.executeQuery();
+            if (resultset != null) {
+                listar = new ArrayList();
+            } else {
+                return null;
+            }
+            Producto reserv = null;
+            while(resultset.next()){
+                reserv=new Producto();
+                reserv.setId(resultset.getInt("producto.id_producto"));
+                reserv.setDescripcion(resultset.getString("producto.descripcion"));
+                reserv.setTipo_producto(resultset.getString("producto.tipo_producto"));
+                reserv.setCantidad(resultset.getInt("producto.cantidad"));
+                reserv.setCasa_comercial(resultset.getString("producto.casa_comercial"));
+                reserv.setValor_unitario(resultset.getDouble("producto.valor_uni"));
+                listar.add(reserv);
+            }
+        }catch (SQLException sqle) {
+            System.out.println("Error en consultar");
+            System.out.println(sqle.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException sqle) {
+                System.out.println("Error al cerrar conexion en consultar");
+                System.out.println(sqle.getMessage());
+            }
+        }
+        return listar;
+    }
+    //falta realizar
+    public ArrayList<Producto> filtrar_productos(String nombre_Producto){ 
+        ArrayList <Producto> listar = null;
+        micon = new Conexion();
+        con = micon.getConection();
+        if (con == null) {
+            return null;
+        }
+        String query = "select id_producto, descripcion, tipo_producto, cantidad, casa_comercial, valor_uni from producto where descripcion=?";
+        try{
+            sentenciaPreparada = con.prepareStatement(query);
+            sentenciaPreparada.setString(1, nombre_Producto);
+            resultset = sentenciaPreparada.executeQuery();
+            if (resultset != null) {
+                listar = new ArrayList();
+            } else {
+                return null;
+            }
+            Producto reserv = null;
+            while(resultset.next()){
+                reserv=new Producto();
+                reserv.setId(resultset.getInt("producto.id_producto"));
+                reserv.setDescripcion(resultset.getString("producto.descripcion"));
+                reserv.setTipo_producto(resultset.getString("producto.tipo_producto"));
+                reserv.setCantidad(resultset.getInt("producto.cantidad"));
+                reserv.setCasa_comercial(resultset.getString("producto.casa_comercial"));
+                reserv.setValor_unitario(resultset.getDouble("producto.valor_uni"));
+                listar.add(reserv);
+            }
+        }catch (SQLException sqle) {
+            System.out.println("Error en consultar");
+            System.out.println(sqle.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException sqle) {
+                System.out.println("Error al cerrar conexion en consultar");
+                System.out.println(sqle.getMessage());
+            }
+        }
+        return listar;
+    }
+    
     
     
     /*public ArrayList<Dkardex> consulta_egresos() {
