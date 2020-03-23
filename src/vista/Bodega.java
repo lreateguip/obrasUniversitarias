@@ -161,9 +161,9 @@ public class Bodega extends javax.swing.JFrame {
         tblProductos = new javax.swing.JTable();
         jTextField13 = new javax.swing.JTextField();
         btnConsultar = new javax.swing.JButton();
-        btnFiltrar = new javax.swing.JButton();
         jLabel27 = new javax.swing.JLabel();
         txtFiltro = new javax.swing.JTextField();
+        btnEliminarP = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         jMenuItem1.setText("jMenuItem1");
@@ -840,29 +840,35 @@ public class Bodega extends javax.swing.JFrame {
         consultaI.add(jTextField13);
         jTextField13.setBounds(390, 10, 263, 33);
 
-        btnConsultar.setText("Consultar");
+        btnConsultar.setText("Consultar Todo");
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultarActionPerformed(evt);
             }
         });
         consultaI.add(btnConsultar);
-        btnConsultar.setBounds(90, 250, 120, 23);
-
-        btnFiltrar.setText("Filtrar");
-        btnFiltrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFiltrarActionPerformed(evt);
-            }
-        });
-        consultaI.add(btnFiltrar);
-        btnFiltrar.setBounds(90, 140, 120, 23);
+        btnConsultar.setBounds(20, 150, 120, 23);
 
         jLabel27.setText("Ingrese descripción a buscar:");
         consultaI.add(jLabel27);
         jLabel27.setBounds(20, 80, 170, 14);
+
+        txtFiltro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFiltroKeyReleased(evt);
+            }
+        });
         consultaI.add(txtFiltro);
         txtFiltro.setBounds(190, 80, 120, 20);
+
+        btnEliminarP.setText("Eliminar");
+        btnEliminarP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarPActionPerformed(evt);
+            }
+        });
+        consultaI.add(btnEliminarP);
+        btnEliminarP.setBounds(170, 150, 100, 23);
 
         jTabbedPane2.addTab("CONSULTA STOCK", consultaI);
 
@@ -1128,6 +1134,24 @@ public class Bodega extends javax.swing.JFrame {
         
     }
     
+    private void llenar_vivo_Productos(){
+        Consulta consultaf= new Consulta();
+        ArrayList<Producto> lista_productos = new ArrayList<>();
+        lista_productos = consultaf.filtrar_vivo_productos(txtFiltro.getText());
+        DefaultTableModel modelo2 = (DefaultTableModel) tblProductos.getModel();
+        for(int i=0; i<lista_productos.size();i++){
+           Object[] ord2 = new Object[7];
+           ord2[0]= lista_productos.get(i).getId();
+           ord2[1]= lista_productos.get(i).getDescripcion();
+           ord2[2]= lista_productos.get(i).getTipo_producto();
+           ord2[3]= lista_productos.get(i).getCasa_comercial();
+           ord2[4]= lista_productos.get(i).getCantidad();
+           ord2[5]= lista_productos.get(i).getValor_unitario();
+           ord2[6]= lista_productos.get(i).getCantidad()*lista_productos.get(i).getValor_unitario();
+           modelo2.addRow(ord2);
+        }
+    }
+    
     private void eliminar_tablaProductos() {
         DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
         int filas = modelo.getRowCount();
@@ -1374,12 +1398,28 @@ public class Bodega extends javax.swing.JFrame {
         eliminar_tablaProductos();
         llenar_tablaProductos();
     }//GEN-LAST:event_btnConsultarActionPerformed
-
-    private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
+    /**/
+    private void txtFiltroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroKeyReleased
         // TODO add your handling code here:
         eliminar_tablaProductos();
-        llenar_filtroProductos();
-    }//GEN-LAST:event_btnFiltrarActionPerformed
+        
+        if (txtFiltro.getText().isEmpty()){
+            eliminar_tablaProductos();
+        }
+        else{
+            llenar_vivo_Productos();
+        }
+    }//GEN-LAST:event_txtFiltroKeyReleased
+
+    private void btnEliminarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarPActionPerformed
+        // TODO add your handling code here:
+        if(tblProductos.getSelectedRow()>=0){
+            Consulta consultae = new Consulta();
+            consultae.eliminar_productos(tblProductos);
+        }
+        
+        
+    }//GEN-LAST:event_btnEliminarPActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1481,7 +1521,7 @@ public class Bodega extends javax.swing.JFrame {
     private javax.swing.JPanel EGRESO;
     private javax.swing.JPanel INGRESO;
     private javax.swing.JButton btnConsultar;
-    private javax.swing.JButton btnFiltrar;
+    private javax.swing.JButton btnEliminarP;
     private javax.swing.JButton btnIngresar;
     private javax.swing.JButton btnIngresarI;
     private javax.swing.JButton btnSubirOrden;
