@@ -10,6 +10,7 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -197,10 +198,9 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBodegaActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        // TODO add your handling code here:
-        Principal p = Principal.getFrame();
-        p.setVisible(false);
-        p.dispose();
+        if (JOptionPane.showConfirmDialog(this, "¿Seguro desea cerrar el Sistema?", "CERRAR SISTEMA", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0) {
+            System.exit(0);
+        }
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnPlanificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlanificacionActionPerformed
