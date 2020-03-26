@@ -1587,6 +1587,7 @@ public class Bodega extends javax.swing.JFrame {
             actP2.actualizarInventarioEliminar(id, cantidad);
             consultael.eliminar_DetalleE(tblDetalle);
             mostrar_detalle();
+            //proceso completado
         }
     }//GEN-LAST:event_btnEliminarDetalleActionPerformed
     
