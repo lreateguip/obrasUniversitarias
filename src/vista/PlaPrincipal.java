@@ -31,6 +31,7 @@ public class PlaPrincipal extends javax.swing.JFrame {
     }
 
     private void configurarVentana() {
+        setTitle("JEFATURA DE PLANIFICACCIÓN - USUARIO: "+usuLog.getUsuario());
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
@@ -43,7 +44,7 @@ public class PlaPrincipal extends javax.swing.JFrame {
                 activarRolAdmin();
                 break;
             case "asistente":
-                activarRolAdmin();
+                activarRolAsistente();
                 break;
         }
     }

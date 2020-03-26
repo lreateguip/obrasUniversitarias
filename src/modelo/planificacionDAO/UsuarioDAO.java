@@ -44,6 +44,7 @@ public class UsuarioDAO {
                 usuLog.setUsuario(rs.getString("usuario"));
                 usuLog.setContraseña(rs.getString("clave"));
                 usuLog.setNombre(rs.getString("nombre"));
+                usuLog.setRol(rs.getString("rol"));
                 usuLog.setEstado(rs.getString("estado"));
             }
         } catch (SQLException sqle) {
