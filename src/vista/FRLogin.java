@@ -1,5 +1,6 @@
 package vista;
 
+import dialogos.Dialogo;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -8,7 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import modelo.planificacionDAO.UsuarioDAO;
 import modelo.planificacionDTO.Usuario;
 
@@ -16,10 +16,12 @@ public class FRLogin extends javax.swing.JDialog {
 
     private PlaPrincipal venPlaPri = null;
     UsuarioDAO consultadao = null;
+    dialogos.Dialogo dialogo;
     private ArrayList<Usuario> lstUsuarios;
 
     public FRLogin(Frame frame, boolean bln) throws IOException {
         super(frame, bln);
+        this.dialogo = new Dialogo(null);
         initComponents();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -36,10 +38,38 @@ public class FRLogin extends javax.swing.JDialog {
         String pclave = txtClave.getText();
 
         if (pusuario.isEmpty() || pclave.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar las credenciales de acceso", "INICIO SESION", JOptionPane.WARNING_MESSAGE);
+            //JOptionPane.showMessageDialog(this, "Debe ingresar las credenciales de acceso", "INICIO SESION", JOptionPane.WARNING_MESSAGE);
+            dialogo.mostrarCuadroInformacion(this, "INICIO SESIÓN","Debe ingresar las credenciales de acceso");
         } else {
             logiarse(pusuario, pclave);
         }
+    }
+
+    private void logiarse(String pusuario, String pclave) {
+        consultadao = new UsuarioDAO();
+        Usuario usuLog = consultadao.consulta_usuario(pusuario, pclave);
+
+        if (usuLog == null) {
+            dialogo.mostrarCuadroInformacion(this, "Usuario y clave incorrecta", "INICIO SESION");
+        } else {
+            inicarSesion(usuLog);
+        }
+    }
+
+    private void inicarSesion(Usuario usuLog) {
+
+        if (venPlaPri == null || !venPlaPri.isShowing()) {
+            try {
+                venPlaPri = new PlaPrincipal(usuLog);
+                venPlaPri.setVisible(true);
+            } catch (Exception ex) {
+                Logger.getLogger(FRLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+
+            venPlaPri.setVisible(true);
+        }
+        dispose();
     }
 
     @SuppressWarnings("unchecked")
@@ -213,33 +243,6 @@ public class FRLogin extends javax.swing.JDialog {
             txtClave.requestFocus();
         }
     }//GEN-LAST:event_txtUsuarioKeyPressed
-
-    private void logiarse(String pusuario, String pclave) {
-        consultadao = new UsuarioDAO();
-        Usuario usuLog = consultadao.consulta_usuario(pusuario, pclave);
-
-        if (usuLog == null) {
-            JOptionPane.showMessageDialog(this, "Usuario y clave incorrecta", "INICIO SESION", JOptionPane.ERROR_MESSAGE);
-        } else {
-            inicarSesion(usuLog);
-        }
-    }
-
-    private void inicarSesion(Usuario usuLog) {
-
-        if (venPlaPri == null || !venPlaPri.isShowing()) {
-            try {
-                venPlaPri = new PlaPrincipal(usuLog);
-            } catch (Exception ex) {
-                Logger.getLogger(FRLogin.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            venPlaPri.setVisible(true);
-        } else {
-            venPlaPri.setVisible(true);
-        }
-        dispose();
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private rojeru_san.RSButton btnCancelar2;
     private rojeru_san.RSButton btnIniciarSesion2;

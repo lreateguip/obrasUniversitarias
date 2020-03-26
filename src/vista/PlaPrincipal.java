@@ -3,7 +3,6 @@ package vista;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.beans.PropertyVetoException;
-import java.io.InputStream;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
@@ -17,19 +16,50 @@ public class PlaPrincipal extends javax.swing.JFrame {
 
     private FUsuario venUsu = null;
     private FRepositorio venRep = null;
-
-    public InputStream fondo;
-    private VenContacto venCont;
-    private Usuario usuLog;
+    private VenContacto venCont = null;
+    private Usuario usuLog = null;
 
     public PlaPrincipal(Usuario usuLog) throws Exception {
-        this.fondo = this.getClass().getResourceAsStream("/recursos/inicio.png");
+        //INICIA LOS COMPONENTES GRAFICOS
         initComponents();
-
+        //ACTUALIZAMOS EL USUARIO QUE INICIÓ SESIÓN
         this.usuLog = usuLog;
+        //SEGUN EL ROL DEL USUSARIO ACTIVAMOS LOS COMPONENTES PERMITIDOS
+        habilitarOpciones(this.usuLog.getRol());
+        //CONFIGURACIÓN BASICA DE ESTA VENTANA
+        configurarVentana();
+    }
+
+    private void configurarVentana() {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
+    }
+
+    private void habilitarOpciones(String rol) {
+        //EVALUAMOS EL ROL Y ACTIVAMOS EL GRUPO DE OPCIONES RESPECTIVAS
+        switch (rol.toLowerCase()) {
+            case "administrador":
+                activarRolAdmin();
+                break;
+            case "asistente":
+                activarRolAdmin();
+                break;
+        }
+    }
+
+    private void activarRolAdmin() {
+        btnConfiguracion.setEnabled(true);
+        btnReportes.setEnabled(true);
+        btnRepositorio.setEnabled(true);
+        btnSalir.setEnabled(true);
+        btnUsuarios.setEnabled(true);
+    }
+
+    private void activarRolAsistente() {
+        btnReportes.setEnabled(true);
+        btnRepositorio.setEnabled(true);
+        btnSalir.setEnabled(true);
     }
 
     public static void getSemFin() {
@@ -67,11 +97,11 @@ public class PlaPrincipal extends javax.swing.JFrame {
         btnSalir = new javax.swing.JButton();
         barra_menu = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
-        itemCerrar = new javax.swing.JMenuItem();
+        itemCerrarSesion = new javax.swing.JMenuItem();
         menuSoporte2 = new javax.swing.JMenu();
         itemContacto = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("JEFETURA DE PLANIFICACIÓN");
         setBackground(new java.awt.Color(0, 102, 255));
         setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -115,6 +145,7 @@ public class PlaPrincipal extends javax.swing.JFrame {
         btnRepositorio.setToolTipText("Mantenimiento de productos de reciclaje");
         btnRepositorio.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnRepositorio.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRepositorio.setEnabled(false);
         btnRepositorio.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnRepositorio.setMaximumSize(new java.awt.Dimension(105, 105));
         btnRepositorio.setMinimumSize(new java.awt.Dimension(105, 105));
@@ -134,6 +165,7 @@ public class PlaPrincipal extends javax.swing.JFrame {
         btnUsuarios.setToolTipText("Mantenimiento de los donantes");
         btnUsuarios.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnUsuarios.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnUsuarios.setEnabled(false);
         btnUsuarios.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnUsuarios.setMaximumSize(new java.awt.Dimension(105, 105));
         btnUsuarios.setMinimumSize(new java.awt.Dimension(105, 105));
@@ -152,6 +184,7 @@ public class PlaPrincipal extends javax.swing.JFrame {
         btnConfiguracion.setToolTipText("Realizar la recepción de reciclaje");
         btnConfiguracion.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnConfiguracion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnConfiguracion.setEnabled(false);
         btnConfiguracion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnConfiguracion.setMaximumSize(new java.awt.Dimension(105, 105));
         btnConfiguracion.setMinimumSize(new java.awt.Dimension(105, 105));
@@ -170,6 +203,7 @@ public class PlaPrincipal extends javax.swing.JFrame {
         btnReportes.setToolTipText("Realizar la recepción de reciclaje");
         btnReportes.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnReportes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReportes.setEnabled(false);
         btnReportes.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnReportes.setMaximumSize(new java.awt.Dimension(105, 105));
         btnReportes.setMinimumSize(new java.awt.Dimension(105, 105));
@@ -189,6 +223,7 @@ public class PlaPrincipal extends javax.swing.JFrame {
         btnSalir.setToolTipText("Ajustes del sistema");
         btnSalir.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalir.setEnabled(false);
         btnSalir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSalir.setMaximumSize(new java.awt.Dimension(105, 105));
         btnSalir.setMinimumSize(new java.awt.Dimension(105, 105));
@@ -245,15 +280,15 @@ public class PlaPrincipal extends javax.swing.JFrame {
         menuArchivo.setText("Archivo");
         menuArchivo.setFont(barra_menu.getFont());
 
-        itemCerrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
-        itemCerrar.setFont(barra_menu.getFont());
-        itemCerrar.setText("Salir");
-        itemCerrar.addActionListener(new java.awt.event.ActionListener() {
+        itemCerrarSesion.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
+        itemCerrarSesion.setFont(barra_menu.getFont());
+        itemCerrarSesion.setText("Cerrar sesión");
+        itemCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemCerrarActionPerformed(evt);
+                itemCerrarSesionActionPerformed(evt);
             }
         });
-        menuArchivo.add(itemCerrar);
+        menuArchivo.add(itemCerrarSesion);
 
         barra_menu.add(menuArchivo);
 
@@ -281,7 +316,7 @@ public class PlaPrincipal extends javax.swing.JFrame {
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         if (JOptionPane.showConfirmDialog(this, "Desea salir del sistema", "Salir del sistema", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION) {
-            System.exit(1);
+            dispose();
         }
     }//GEN-LAST:event_btnSalirActionPerformed
 
@@ -321,9 +356,9 @@ public class PlaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRepositorioActionPerformed
 
-    private void itemCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarActionPerformed
+    private void itemCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarSesionActionPerformed
         btnSalirActionPerformed(evt);
-    }//GEN-LAST:event_itemCerrarActionPerformed
+    }//GEN-LAST:event_itemCerrarSesionActionPerformed
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
 
@@ -386,7 +421,7 @@ public class PlaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnUsuarios;
     private javax.swing.JDesktopPane escritorio;
-    private javax.swing.JMenuItem itemCerrar;
+    private javax.swing.JMenuItem itemCerrarSesion;
     private javax.swing.JMenuItem itemContacto;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuSoporte2;
