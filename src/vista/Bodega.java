@@ -925,6 +925,11 @@ public class Bodega extends javax.swing.JFrame {
         btnConsultarIE.setBounds(80, 160, 160, 23);
 
         btnEliminarIE.setText("Eliminar Cabezera");
+        btnEliminarIE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarIEActionPerformed(evt);
+            }
+        });
         CONSULTAIE.add(btnEliminarIE);
         btnEliminarIE.setBounds(80, 220, 160, 23);
 
@@ -1590,6 +1595,10 @@ public class Bodega extends javax.swing.JFrame {
             //proceso completado
         }
     }//GEN-LAST:event_btnEliminarDetalleActionPerformed
+
+    private void btnEliminarIEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarIEActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEliminarIEActionPerformed
     
     private void llenar_tablaE(){
         ConsultaIE consultaE = new ConsultaIE();
