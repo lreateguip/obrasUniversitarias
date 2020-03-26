@@ -9,27 +9,25 @@ package modelo.planificacionDTO;
  *
  * @author Luis Reategui
  */
-public class UsuarioPla {
+public class Usuario {
 
     private int id;
     private String usuario;
-    private String clave;
+    private String contraseña;
     private String nombre;
     private String estado;
-    private String imagen;
+    private String rol;
 
-    public UsuarioPla(int id, String usuario, String clave, String nombre, String estado, String imagen) {
+    public Usuario(int id, String usuario, String clave, String nombre, String estado, String rol) {
         this.id = id;
         this.usuario = usuario;
-        this.clave = clave;
+        this.contraseña = clave;
         this.nombre = nombre;
         this.estado = estado;
-        this.imagen = imagen;
+        this.rol = rol;
     }
 
-    
-
-    public UsuarioPla() {
+    public Usuario() {
     }
 
     public int getId() {
@@ -48,12 +46,12 @@ public class UsuarioPla {
         this.usuario = usuario;
     }
 
-    public String getClave() {
-        return clave;
+    public String getContraseña() {
+        return contraseña;
     }
 
-    public void setClave(String clave) {
-        this.clave = clave;
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
 
     public String getNombre() {
@@ -72,19 +70,24 @@ public class UsuarioPla {
         this.estado = estado;
     }
 
-    public String getImagen() {
-        return imagen;
+    public String getRol() {
+        return rol;
     }
 
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+    
+    public Object[] getFila(){
+        Object fila [] = {id, usuario, contraseña, nombre, rol, estado};
+        return fila;
     }
     
     
 
     @Override
     public String toString() {
-        return "UsuarioPla{" + "id=" + id + ", usuario=" + usuario + ", clave=" + clave + ", nombre=" + nombre + ", estado=" + estado + '}';
+        return "UsuarioPla{" + "id=" + id + ", usuario=" + usuario + ", clave=" + contraseña + ", nombre=" + nombre + ", estado=" + estado + '}';
     }
     
     

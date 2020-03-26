@@ -17,7 +17,7 @@ public class Conexion {
 	final String password="";
 
         //final String cadenaConexion="jdbc:mysql://db4free.net:3306/"+BD;
-        final String cadenaConexion="jdbc:mysql://localhost:3306/"+BD;
+        final String cadenaConexion="jdbc:mysql://localhost:3306/"+BD+"?useServerPrepStmts=true";
 	//constructor para la clase
 	public Conexion(){
 		this.conection=null;
@@ -27,7 +27,6 @@ public class Conexion {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("Class mysql no encontrada");
 		}

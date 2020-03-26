@@ -28,15 +28,18 @@ import modelo.planificacionDTO.Archivo;
 public class ArchivoDAO {
 
     private Connection con;
-    private PreparedStatement ps;
     private Conexion micon;
+
+    public ArchivoDAO() {
+        micon = new Conexion();
+        //obtener la Conexion a la bdd
+        con = micon.getConection();
+
+    }
 
     public int guardarArchivo(Archivo archivo) {
         int res = 0;
 
-        micon = new Conexion();
-        //obtener la Conexion a la bdd
-        con = micon.getConection();
         //sentencia de inserción
         String sql = "INSERT INTO archivo (titulo, peso, fecha_guardado, extension, archivo,ruta, usuario) VALUES (?,?,?,?,?,?,?)";
 
@@ -44,9 +47,8 @@ public class ArchivoDAO {
             File file = new File(archivo.getRuta());
             FileInputStream fis = new FileInputStream(file);
 
-            
             //crear la sentencia preparada
-            ps = con.prepareStatement(sql);
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, archivo.getTitulo());
             ps.setDouble(2, archivo.getTamañoMB());
             ps.setString(3, archivo.getFecha());
@@ -75,16 +77,13 @@ public class ArchivoDAO {
 
     public int eliminarArchivo(int id) {
         int res = 0;
-
-        micon = new Conexion();
-        //obtener la Conexion a la bdd
-        con = micon.getConection();
+        
         //sentencia de inserción
         String sql = "DELETE from archivo WHERE id = ?";
 
         try {
             //PREPARAR LA SENTENCIA Y PARAMETROA A EJECUTAR
-            ps = con.prepareStatement(sql);
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             res = ps.executeUpdate();
 
@@ -105,19 +104,58 @@ public class ArchivoDAO {
     public ArrayList<Archivo> consultarArchivos() throws FileNotFoundException {
         InputStream input = null;
         FileOutputStream output = null;
-
-        micon = new Conexion();
-        //obtener la Conexion a la bdd
-        con = micon.getConection();
-
+        
         ArrayList<Archivo> lstArchivos = new ArrayList<>();
 
         try {
             String sql = "SELECT *FROM archivo";
-            ps = con.prepareStatement(sql);
+            PreparedStatement ps = (PreparedStatement) con.prepareStatement(sql);
             //ps.setString(1, "A");
 
             ResultSet rs = ps.executeQuery(sql);
+
+            while (rs.next()) {
+                Archivo archivoSel = new Archivo();
+                archivoSel.setId(rs.getInt("id"));
+                archivoSel.setTitulo(rs.getString("titulo"));
+                archivoSel.setTamañoBytes(rs.getLong("peso"));
+                archivoSel.setFecha(rs.getString("fecha_guardado"));
+                archivoSel.setExtension(rs.getString("extension"));
+                archivoSel.setUsuario(rs.getString("usuario"));
+                archivoSel.setImput(rs.getBinaryStream("archivo"));
+                archivoSel.setRuta(rs.getString("ruta"));
+                //agregamos a la lista de archivos
+                lstArchivos.add(archivoSel);
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        } finally {
+            try {
+                if (input != null) {
+                    input.close();
+                }
+                if (output != null) {
+                    output.close();
+                }
+            } catch (IOException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
+        return lstArchivos;
+    }
+
+    public ArrayList<Archivo> consultarArchivosPorCriterio(String criterio) {
+        InputStream input = null;
+        FileOutputStream output = null;
+
+        ArrayList<Archivo> lstArchivos = new ArrayList<>();
+
+        try {
+            String sql = "CALL P_CONSULTAR_POR_CRITERIO(?)";
+            java.sql.PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, criterio);
+
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 Archivo archivoSel = new Archivo();
