@@ -7,6 +7,7 @@ package Validaciones;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JTextField;
 
 /**
  *
@@ -20,6 +21,16 @@ public class Validaciones {
         }
         else{
             boton.setEnabled(true);
+        }
+    }
+    
+    public static void desactivar_campotexto(JComboBox combo, JTextField campo){
+        if(combo.getSelectedIndex()==0){
+            campo.setEnabled(false);
+            campo.setText("");
+        }
+        else{
+            campo.setEnabled(true);
         }
     }
 }

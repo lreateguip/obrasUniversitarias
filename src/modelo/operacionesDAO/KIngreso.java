@@ -121,6 +121,38 @@ public class KIngreso {
         return res;
         
     }
+    
+    public int actualizarInventarioEliminar(int id_producto, int cantidad){
+        int res=0;
+        micon = new Conexion();
+        //obtener la conexion a la bdd
+        con = micon.getConection();
+        //sentencia de inserción
+        String sql = "update producto set cantidad=cantidad-? where id_producto=?";
+                  
+
+        try {
+            //crear la sentencia preparada
+            sentenciaPreparada = con.prepareStatement(sql);
+            sentenciaPreparada.setInt(1, cantidad);
+            sentenciaPreparada.setInt(2,id_producto );
+            res = sentenciaPreparada.executeUpdate();
+
+        } catch (SQLException sqle) {
+            System.out.println("Error en guardar ");
+            System.out.println(sqle.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException sqle) {
+                System.out.println("Error al cerrar conexion");
+                System.out.println(sqle.getMessage());
+            }
+        }
+        
+        return res;
+        
+    }
       
       
       

@@ -52,6 +52,8 @@ public class Bodega extends javax.swing.JFrame {
         txtCantidadI.setEditable(false);
         
         btnConsultarIE.setEnabled(false);
+        btnEliminarIE.setEnabled(false);
+        btnEliminarDetalle.setEnabled(false);
         
 
     }
@@ -177,6 +179,7 @@ public class Bodega extends javax.swing.JFrame {
         jLabel31 = new javax.swing.JLabel();
         btnConsultarIE = new javax.swing.JButton();
         btnEliminarIE = new javax.swing.JButton();
+        btnEliminarDetalle = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
         jMenuItem1.setText("jMenuItem1");
@@ -821,6 +824,12 @@ public class Bodega extends javax.swing.JFrame {
         jLabel28.setText("No de Orden:");
         CONSULTAIE.add(jLabel28);
         jLabel28.setBounds(30, 90, 160, 14);
+
+        txtOrdenConsulta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtOrdenConsultaKeyReleased(evt);
+            }
+        });
         CONSULTAIE.add(txtOrdenConsulta);
         txtOrdenConsulta.setBounds(120, 90, 180, 20);
 
@@ -875,14 +884,14 @@ public class Bodega extends javax.swing.JFrame {
 
             },
             new String [] {
-                "No de Orden", "Producto", "Cantidad", "Valor Unitario", "Total Asignado"
+                "Id", "No de Orden", "Id Producto", "Producto", "Cantidad", "Valor Unitario", "Total Asignado"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -913,11 +922,25 @@ public class Bodega extends javax.swing.JFrame {
             }
         });
         CONSULTAIE.add(btnConsultarIE);
-        btnConsultarIE.setBounds(30, 150, 120, 23);
+        btnConsultarIE.setBounds(80, 160, 160, 23);
 
-        btnEliminarIE.setText("Eliminar");
+        btnEliminarIE.setText("Eliminar Cabezera");
+        btnEliminarIE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarIEActionPerformed(evt);
+            }
+        });
         CONSULTAIE.add(btnEliminarIE);
-        btnEliminarIE.setBounds(180, 150, 110, 23);
+        btnEliminarIE.setBounds(80, 220, 160, 23);
+
+        btnEliminarDetalle.setText("Eliminar Detalle");
+        btnEliminarDetalle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarDetalleActionPerformed(evt);
+            }
+        });
+        CONSULTAIE.add(btnEliminarDetalle);
+        btnEliminarDetalle.setBounds(80, 280, 160, 23);
 
         PanelBodega.addTab("CONSULTA I/E", CONSULTAIE);
 
@@ -1474,6 +1497,9 @@ public class Bodega extends javax.swing.JFrame {
     private void cmbTipoOrdenItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTipoOrdenItemStateChanged
         // TODO add your handling code here:
         Validaciones.desactivar_boton(cmbTipoOrden, btnConsultarIE);
+        Validaciones.desactivar_boton(cmbTipoOrden, btnEliminarIE);
+        Validaciones.desactivar_boton(cmbTipoOrden, btnEliminarDetalle);
+        Validaciones.desactivar_campotexto(cmbTipoOrden, txtOrdenConsulta);
         eliminar_tablaIE();
         eliminar_tablaDetalle();
         
@@ -1481,6 +1507,11 @@ public class Bodega extends javax.swing.JFrame {
 
     private void tblCabezeraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCabezeraMouseClicked
         // TODO add your handling code here:
+        mostrar_detalle();
+        
+    }//GEN-LAST:event_tblCabezeraMouseClicked
+
+    private void mostrar_detalle(){
         eliminar_tablaDetalle();
         ConsultaIE consultaC = new ConsultaIE();
         if(cmbTipoOrden.getSelectedIndex()==1){
@@ -1491,12 +1522,14 @@ public class Bodega extends javax.swing.JFrame {
         lista_dingresos = consultaC.llenar_detalleI(dato);
         for(int i=0; i<lista_dingresos.size();i++){
            Producto p =consultaC.llenar_detalleIP(lista_dingresos.get(i).getId_pro());
-           Object[] ord2 = new Object[5];
-           ord2[0]= lista_dingresos.get(i).getNo_orden();
-           ord2[1]= p.getDescripcion();
-           ord2[2]= lista_dingresos.get(i).getCantidad();
-           ord2[3]= p.getValor_unitario();
-           ord2[4]= lista_dingresos.get(i).getCantidad()*p.getValor_unitario();
+           Object[] ord2 = new Object[7];
+           ord2[0]= lista_dingresos.get(i).getId_ingpro();
+           ord2[1]= lista_dingresos.get(i).getNo_orden();
+           ord2[2]= p.getId();
+           ord2[3]= p.getDescripcion();
+           ord2[4]= lista_dingresos.get(i).getCantidad();
+           ord2[5]= p.getValor_unitario();
+           ord2[6]= lista_dingresos.get(i).getCantidad()*p.getValor_unitario();
            //agregar_boton();
            modelo3.addRow(ord2);
         }
@@ -1509,19 +1542,63 @@ public class Bodega extends javax.swing.JFrame {
         lista_degresos = consultaC.llenar_detalleE(dato);
         for(int i=0; i<lista_degresos.size();i++){
            Producto p =consultaC.llenar_detalleIP(lista_degresos.get(i).getId_pro());
-           Object[] ord2 = new Object[5];
-           ord2[0]= lista_degresos.get(i).getNo_orden();
-           ord2[1]= p.getDescripcion();
-           ord2[2]= lista_degresos.get(i).getCantidad();
-           ord2[3]= p.getValor_unitario();
-           ord2[4]= lista_degresos.get(i).getCantidad()*p.getValor_unitario();
+           Object[] ord2 = new Object[7];
+           ord2[0]= lista_degresos.get(i).getId_egrepro();
+           ord2[1]= lista_degresos.get(i).getNo_orden();
+           ord2[2]= p.getId();
+           ord2[3]= p.getDescripcion();
+           ord2[4]= lista_degresos.get(i).getCantidad();
+           ord2[5]= p.getValor_unitario();
+           ord2[6]= lista_degresos.get(i).getCantidad()*p.getValor_unitario();
            //agregar_boton();
            modelo3.addRow(ord2);
         }
             
         }
+    }
+    private void txtOrdenConsultaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOrdenConsultaKeyReleased
+        // TODO add your handling code here:
+        eliminar_tablaIE();
+        eliminar_tablaDetalle();
         
-    }//GEN-LAST:event_tblCabezeraMouseClicked
+        if (txtOrdenConsulta.getText().isEmpty()){
+            eliminar_tablaIE();
+        }
+        else if(cmbTipoOrden.getSelectedIndex()==1){
+            llenar_vivo_CabezeraI();
+        } else if(cmbTipoOrden.getSelectedIndex()==2){
+            llenar_vivo_CabezeraE();
+        }
+    }//GEN-LAST:event_txtOrdenConsultaKeyReleased
+
+    private void btnEliminarDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarDetalleActionPerformed
+        // TODO add your handling code here:
+        ConsultaIE consultael = new ConsultaIE();
+        KIngreso actP = new KIngreso();
+        KEgreso actP2 = new KEgreso();
+        DefaultTableModel modelo3 = (DefaultTableModel) tblDetalle.getModel(); //recien agregada
+//        String cant=(String) modelo3.getValueAt(tblDetalle.getSelectedRow(),4);//recien agregada
+//        String i=(String) modelo3.getValueAt(tblDetalle.getSelectedRow(), 2);
+        String canti =String.valueOf(modelo3.getValueAt(tblDetalle.getSelectedRow(),4));
+        String ii =String.valueOf(modelo3.getValueAt(tblDetalle.getSelectedRow(),2));
+        int cantidad = Integer.parseInt(canti);
+        int id = Integer.parseInt(ii);
+        if(cmbTipoOrden.getSelectedIndex()==1){
+            actP.actualizarInventarioEliminar(id, cantidad); //recien agregada
+            consultael.eliminar_DetalleI(tblDetalle);
+            mostrar_detalle();
+            
+        } else if(cmbTipoOrden.getSelectedIndex()==2){
+            actP2.actualizarInventarioEliminar(id, cantidad);
+            consultael.eliminar_DetalleE(tblDetalle);
+            mostrar_detalle();
+            //proceso completado
+        }
+    }//GEN-LAST:event_btnEliminarDetalleActionPerformed
+
+    private void btnEliminarIEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarIEActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEliminarIEActionPerformed
     
     private void llenar_tablaE(){
         ConsultaIE consultaE = new ConsultaIE();
@@ -1581,6 +1658,36 @@ public class Bodega extends javax.swing.JFrame {
             
         }
 
+    }
+    
+    private void llenar_vivo_CabezeraI(){
+        ConsultaIE consultaf= new ConsultaIE();
+        ArrayList<Ikardex> lista_ingresos = new ArrayList<>();
+        lista_ingresos = consultaf.filtrar_vivo_cabezeraI(txtOrdenConsulta.getText());
+        DefaultTableModel modelo2 = (DefaultTableModel) tblCabezera.getModel();
+        for(int i=0; i<lista_ingresos.size();i++){
+           Object[] ord2 = new Object[5];
+           ord2[0]= lista_ingresos.get(i).getNumreq();
+           ord2[1]= lista_ingresos.get(i).getDescripcion();
+           ord2[2]= lista_ingresos.get(i).getFecha();
+           ord2[3]= lista_ingresos.get(i).getEstado();
+           modelo2.addRow(ord2);
+        }
+    }
+    
+    private void llenar_vivo_CabezeraE(){
+        ConsultaIE consultaf= new ConsultaIE();
+        ArrayList<Ekardex> lista_egresos = new ArrayList<>();
+        lista_egresos = consultaf.filtrar_vivo_cabezeraE(txtOrdenConsulta.getText());
+        DefaultTableModel modelo2 = (DefaultTableModel) tblCabezera.getModel();
+        for(int i=0; i<lista_egresos.size();i++){
+           Object[] ord2 = new Object[5];
+           ord2[0]= lista_egresos.get(i).getNumreq();
+           ord2[1]= lista_egresos.get(i).getDescripcion();
+           ord2[2]= lista_egresos.get(i).getFecha();
+           ord2[3]= lista_egresos.get(i).getEstado();
+           modelo2.addRow(ord2);
+        }
     }
     
     
@@ -1701,6 +1808,7 @@ public class Bodega extends javax.swing.JFrame {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnConsultarIE;
+    private javax.swing.JButton btnEliminarDetalle;
     private javax.swing.JButton btnEliminarIE;
     private javax.swing.JButton btnEliminarP;
     private javax.swing.JButton btnIngresar;
