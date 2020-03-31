@@ -1,10 +1,8 @@
-package vista;
+package vista.planificacion;
 
+import Validaciones.Validaciones;
 import java.awt.Color;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import modelo.bodegaDTO.FormatoTablas;
 import modelo.planificacionDAO.UsuarioDAO;
@@ -27,6 +25,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
     }
 
     private void consultarUsuarios() {
+        FormatoTablas.limpiarTabla(tblUsuario);
         for (Usuario usuario : usuDao.consulta_usuarios()) {
             ((DefaultTableModel) tblUsuario.getModel()).addRow(usuario.getFila());
         }
@@ -35,13 +34,6 @@ public class FUsuario extends javax.swing.JInternalFrame {
 
     public static void main(String args[]) {
         new FUsuario().setVisible(true);
-    }
-
-    private void convertirMayus(KeyEvent evt) {
-        char c = evt.getKeyChar();
-        String cad = ("" + c).toUpperCase();
-        c = cad.charAt(0);
-        evt.setKeyChar(c);
     }
 
     private void insertarUsuario() {
@@ -65,21 +57,6 @@ public class FUsuario extends javax.swing.JInternalFrame {
         cmbEstado.setSelectedItem(tblUsuario.getValueAt(fila, 5));
     }//fin de método
 
-    private void validarIngresoNumeros(KeyEvent evt) {
-        int limite = 10;
-        JTextField txtAux = (JTextField) evt.getSource();
-        if (!Character.isDigit(evt.getKeyChar()) || txtAux.getText().length() >= limite) {
-            evt.consume();
-        } else {
-        }
-    }
-
-    private void validarIngresoLetras(KeyEvent evt) {
-        if (Character.isDigit(evt.getKeyChar())) {
-            evt.consume();
-        }
-    }
-
     private void activarCampos(boolean activar) {
         txtUsuario.setEnabled(activar);
         txtContraseña.setEnabled(activar);
@@ -87,24 +64,6 @@ public class FUsuario extends javax.swing.JInternalFrame {
         cmbRol.setEnabled(activar);
         cmbEstado.setEnabled(activar);
     }
-
-    private void resaltarVacio(KeyEvent evt) {
-        JTextField txtAux = (JTextField) evt.getSource();
-        if (txtAux.getText().equals("")) {
-            txtAux.setBackground(Color.yellow);
-        } else {
-            txtAux.setBackground(Color.WHITE);
-        }
-    }//fin de metodo
-
-    private void resaltarVacio(FocusEvent evt) {
-        JTextField txtAux = (JTextField) evt.getSource();
-        if (txtAux.getText().equals("")) {
-            txtAux.setBackground(Color.yellow);
-        } else {
-            txtAux.setBackground(Color.WHITE);
-        }
-    }//fin de metodo
 
     private boolean validarCampos() {
         boolean lleno = true;
@@ -140,34 +99,13 @@ public class FUsuario extends javax.swing.JInternalFrame {
         cmbRol.setSelectedIndex(0);
         cmbEstado.setSelectedIndex(0);
     }
-
-//    private void imprimirReporteDonantes() {
-//        try {
-//            String ruta = "/reportes/repDonantes.jasper";
-//            String logo = "recursos/icono.png";
-//            //String logo = "recursos/logo.png";
-//            Map<String, Object> parametro = new HashMap<String, Object>();
-//            parametro.put("LOGO", logo);
-//            JasperReport reporte = null;
-//            //reporte = (JasperReport) JRLoader.loadObjectFromFile(ruta);
-//            reporte = (JasperReport) JRLoader.loadObject(getClass().getResource(ruta));
-//            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametro, Conexion_base.con);
-//            JasperViewer view = new JasperViewer(jasperPrint, false);
-//            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-//            view.setExtendedState(JasperViewer.MAXIMIZED_BOTH);
-//            view.setZoomRatio(1f);
-//            view.setVisible(true);
-//        } catch (JRException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelEncabezado = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        panelDonante = new javax.swing.JPanel();
+        lbTitulo = new javax.swing.JLabel();
+        panelUsuarios = new javax.swing.JPanel();
         panelTabla = new javax.swing.JPanel();
         scrollTablaDonantes = new javax.swing.JScrollPane();
         tblUsuario = new javax.swing.JTable();
@@ -178,14 +116,14 @@ public class FUsuario extends javax.swing.JInternalFrame {
         panelCampos2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
-        cmbEstado = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        txtContraseña = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         cmbRol = new javax.swing.JComboBox<>();
+        cmbEstado = new javax.swing.JComboBox<>();
+        txtContraseña = new rojeru_san.RSMPassView();
         btnPDF = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         panelControl = new javax.swing.JPanel();
@@ -212,21 +150,14 @@ public class FUsuario extends javax.swing.JInternalFrame {
         setMinimumSize(new java.awt.Dimension(999, 531));
         setPreferredSize(new java.awt.Dimension(1200, 650));
 
-        panelEncabezado.setBackground(getBackground());
-        panelEncabezado.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        panelEncabezado.setForeground(new java.awt.Color(255, 255, 255));
-        panelEncabezado.setPreferredSize(new java.awt.Dimension(717, 50));
-        panelEncabezado.setLayout(new java.awt.BorderLayout());
+        lbTitulo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbTitulo.setForeground(getForeground());
+        lbTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbTitulo.setText("Mantenimiento de usuarios");
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setForeground(getForeground());
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Mantenimiento de usuarios");
-        panelEncabezado.add(jLabel1, java.awt.BorderLayout.CENTER);
-
-        panelDonante.setBackground(new java.awt.Color(204, 204, 204));
-        panelDonante.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        panelDonante.setLayout(new java.awt.BorderLayout(5, 5));
+        panelUsuarios.setBackground(new java.awt.Color(204, 204, 204));
+        panelUsuarios.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panelUsuarios.setLayout(new java.awt.BorderLayout(5, 5));
 
         panelTabla.setBackground(new java.awt.Color(102, 102, 102));
         panelTabla.setLayout(new java.awt.BorderLayout());
@@ -286,7 +217,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
 
         panelTabla.add(scrollTablaDonantes, java.awt.BorderLayout.CENTER);
 
-        panelDonante.add(panelTabla, java.awt.BorderLayout.CENTER);
+        panelUsuarios.add(panelTabla, java.awt.BorderLayout.CENTER);
 
         panelPiesR.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         panelPiesR.setPreferredSize(new java.awt.Dimension(717, 50));
@@ -309,7 +240,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
         });
         panelPiesR.add(btnLimpiar1, java.awt.BorderLayout.EAST);
 
-        panelDonante.add(panelPiesR, java.awt.BorderLayout.SOUTH);
+        panelUsuarios.add(panelPiesR, java.awt.BorderLayout.SOUTH);
 
         pnlIzq.setBackground(new java.awt.Color(204, 204, 204));
         pnlIzq.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -317,7 +248,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
         pnlIzq.setOpaque(false);
 
         panelCampos2.setBackground(getBackground());
-        panelCampos2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de producto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
+        panelCampos2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de producto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
         panelCampos2.setOpaque(false);
 
         jLabel2.setFont(pnlIzq.getFont());
@@ -331,19 +262,9 @@ public class FUsuario extends javax.swing.JInternalFrame {
             }
         });
 
-        cmbEstado.setFont(pnlIzq.getFont());
-        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACTIVADO", "INACTIVADO" }));
-
         jLabel4.setFont(pnlIzq.getFont());
         jLabel4.setForeground(getForeground());
         jLabel4.setText("Estado");
-
-        txtContraseña.setFont(pnlIzq.getFont());
-        txtContraseña.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtContraseñaKeyTyped(evt);
-            }
-        });
 
         jLabel5.setFont(pnlIzq.getFont());
         jLabel5.setForeground(getForeground());
@@ -367,6 +288,13 @@ public class FUsuario extends javax.swing.JInternalFrame {
         cmbRol.setFont(pnlIzq.getFont());
         cmbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECCIONE", "ADMINISTRADOR", "ASISTENTE" }));
 
+        cmbEstado.setFont(pnlIzq.getFont());
+        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECCIONE", "ACTIVADO", "INACTIVADO" }));
+
+        txtContraseña.setFont(pnlIzq.getFont());
+        txtContraseña.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        txtContraseña.setPlaceholder("");
+
         javax.swing.GroupLayout panelCampos2Layout = new javax.swing.GroupLayout(panelCampos2);
         panelCampos2.setLayout(panelCampos2Layout);
         panelCampos2Layout.setHorizontalGroup(
@@ -374,17 +302,23 @@ public class FUsuario extends javax.swing.JInternalFrame {
             .addGroup(panelCampos2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelCampos2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtUsuario)
-                    .addComponent(txtContraseña)
-                    .addComponent(txtNombre)
-                    .addComponent(cmbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cmbRol, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(panelCampos2Layout.createSequentialGroup()
+                        .addGroup(panelCampos2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbRol, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmbEstado, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
+
+        panelCampos2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtContraseña, txtNombre, txtUsuario});
+
         panelCampos2Layout.setVerticalGroup(
             panelCampos2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCampos2Layout.createSequentialGroup()
@@ -395,11 +329,11 @@ public class FUsuario extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -410,6 +344,8 @@ public class FUsuario extends javax.swing.JInternalFrame {
                 .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        panelCampos2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtContraseña, txtNombre, txtUsuario});
 
         btnPDF.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
         btnPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/btnReporte64.png"))); // NOI18N
@@ -454,7 +390,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
             .addGroup(pnlIzqLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelCampos2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnlIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnPDF, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -548,26 +484,28 @@ public class FUsuario extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(panelEncabezado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(pnlIzq, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(panelControl, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelDonante, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)))
+                        .addComponent(panelUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 836, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lbTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(4, 4, 4)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelEncabezado, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbTitulo)
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelDonante, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(panelUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pnlIzq, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -646,21 +584,10 @@ public class FUsuario extends javax.swing.JInternalFrame {
         limpiarCampos();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
-    private void txtUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsuarioKeyTyped
-        validarIngresoNumeros(evt);
-        resaltarVacio(evt);
-    }//GEN-LAST:event_txtUsuarioKeyTyped
-
-    private void txtContraseñaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContraseñaKeyTyped
-        validarIngresoLetras(evt);
-        convertirMayus(evt);
-        resaltarVacio(evt);
-    }//GEN-LAST:event_txtContraseñaKeyTyped
-
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
-        validarIngresoLetras(evt);
-        convertirMayus(evt);
-        resaltarVacio(evt);
+        Validaciones.validarIngresoLetras(evt);
+        Validaciones.cambiarLetraMayus(evt);
+        Validaciones.resaltarVacio(evt);
     }//GEN-LAST:event_txtNombreKeyTyped
 
     private void btnPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPDFActionPerformed
@@ -670,6 +597,11 @@ public class FUsuario extends javax.swing.JInternalFrame {
     private void btnLimpiar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar1ActionPerformed
         FormatoTablas.limpiarTabla(tblUsuario);
     }//GEN-LAST:event_btnLimpiar1ActionPerformed
+
+    private void txtUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsuarioKeyTyped
+        Validaciones.cambiarLetraMinus(evt);
+        Validaciones.resaltarVacio(evt);
+    }//GEN-LAST:event_txtUsuarioKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
@@ -683,23 +615,22 @@ public class FUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnPDF;
     private javax.swing.JComboBox<String> cmbEstado;
     private javax.swing.JComboBox<String> cmbRol;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel lbTitulo;
     private javax.swing.JLabel lblObservacion;
     private javax.swing.JPanel panelCampos2;
     private javax.swing.JPanel panelControl;
-    private javax.swing.JPanel panelDonante;
-    private javax.swing.JPanel panelEncabezado;
     private javax.swing.JPanel panelPiesR;
     private javax.swing.JPanel panelTabla;
+    private javax.swing.JPanel panelUsuarios;
     private javax.swing.JPanel pnlIzq;
     private javax.swing.JScrollPane scrollTablaDonantes;
     private javax.swing.JTable tblUsuario;
-    private javax.swing.JTextField txtContraseña;
+    private rojeru_san.RSMPassView txtContraseña;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables

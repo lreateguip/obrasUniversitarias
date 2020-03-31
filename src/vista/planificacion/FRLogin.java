@@ -1,4 +1,4 @@
-package vista;
+package vista.planificacion;
 
 import dialogos.Dialogo;
 import java.awt.Frame;
@@ -14,7 +14,7 @@ import modelo.planificacionDTO.Usuario;
 
 public class FRLogin extends javax.swing.JDialog {
 
-    private PlaPrincipal venPlaPri = null;
+    private FPlanificacion venPlaPri = null;
     UsuarioDAO consultadao = null;
     dialogos.Dialogo dialogo;
     private ArrayList<Usuario> lstUsuarios;
@@ -45,12 +45,12 @@ public class FRLogin extends javax.swing.JDialog {
         }
     }
 
-    private void logiarse(String pusuario, String pclave) {
+    private void logiarse(String pusuario, String pcontraseña) {
         consultadao = new UsuarioDAO();
-        Usuario usuLog = consultadao.consulta_usuario(pusuario, pclave);
+        Usuario usuLog = consultadao.consulta_usuario(pusuario, pcontraseña);
 
         if (usuLog == null) {
-            dialogo.mostrarCuadroInformacion(this, "Usuario y clave incorrecta", "INICIO SESION");
+            dialogo.mostrarCuadroInformacion(this, "INICIO SESIÓN", "Usuario y clave incorrecta");
         } else {
             inicarSesion(usuLog);
         }
@@ -60,7 +60,7 @@ public class FRLogin extends javax.swing.JDialog {
 
         if (venPlaPri == null || !venPlaPri.isShowing()) {
             try {
-                venPlaPri = new PlaPrincipal(usuLog);
+                venPlaPri = new FPlanificacion(usuLog);
                 venPlaPri.setVisible(true);
             } catch (Exception ex) {
                 Logger.getLogger(FRLogin.class.getName()).log(Level.SEVERE, null, ex);

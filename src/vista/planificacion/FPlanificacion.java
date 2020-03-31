@@ -1,25 +1,28 @@
-package vista;
+package vista.planificacion;
 
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.beans.PropertyVetoException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import modelo.planificacionDTO.Usuario;
 
-public class PlaPrincipal extends javax.swing.JFrame {
+public class FPlanificacion extends javax.swing.JFrame {
 
     private FUsuario venUsu = null;
     private FRepositorio venRep = null;
     private VenContacto venCont = null;
     private Usuario usuLog = null;
 
-    public PlaPrincipal(Usuario usuLog) throws Exception {
+    public FPlanificacion(Usuario usuLog) throws Exception {
         //INICIA LOS COMPONENTES GRAFICOS
         initComponents();
         //ACTUALIZAMOS EL USUARIO QUE INICIÓ SESIÓN
@@ -28,10 +31,31 @@ public class PlaPrincipal extends javax.swing.JFrame {
         habilitarOpciones(this.usuLog.getRol());
         //CONFIGURACIÓN BASICA DE ESTA VENTANA
         configurarVentana();
+        iniciarFechaHora(lbFecha, lbHora);
+        actualizarDatosLog();
+    }
+
+    private void iniciarFechaHora(JLabel lbFecha, JLabel lbHora) {
+        String strDateFormat = "yyyy-MMM-dd HH:mm:ss"; // El formato de fecha está especificado  
+        SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
+
+        Thread proc = new Thread(() -> {
+            while (true) {
+                String fecha_hora[] = objSDF.format(new Date()).split(" ");
+                lbFecha.setText(fecha_hora[0]);
+                lbHora.setText(fecha_hora[1]);
+            }
+        });
+        proc.start();
+    }
+
+    private void actualizarDatosLog() {
+        lbNombreUsuario.setText(usuLog.getNombre());
+        lbRol.setText(usuLog.getRol());
     }
 
     private void configurarVentana() {
-        setTitle("JEFATURA DE PLANIFICACCIÓN - USUARIO: "+usuLog.getUsuario());
+        setTitle("JEFATURA DE PLANIFICACCIÓN - USUARIO: " + usuLog.getUsuario());
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
@@ -46,19 +70,20 @@ public class PlaPrincipal extends javax.swing.JFrame {
             case "asistente":
                 activarRolAsistente();
                 break;
+            default:
+                JOptionPane.showMessageDialog(this, "El usuario no tiene un rol válido", "INICIO DE SESIÓN", JOptionPane.WARNING_MESSAGE);
+                break;
         }
     }
 
     private void activarRolAdmin() {
         btnConfiguracion.setEnabled(true);
-        btnReportes.setEnabled(true);
         btnRepositorio.setEnabled(true);
         btnSalir.setEnabled(true);
         btnUsuarios.setEnabled(true);
     }
 
     private void activarRolAsistente() {
-        btnReportes.setEnabled(true);
         btnRepositorio.setEnabled(true);
         btnSalir.setEnabled(true);
     }
@@ -94,8 +119,13 @@ public class PlaPrincipal extends javax.swing.JFrame {
         btnRepositorio = new javax.swing.JButton();
         btnUsuarios = new javax.swing.JButton();
         btnConfiguracion = new javax.swing.JButton();
-        btnReportes = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        lbImagenUsuario = new javax.swing.JLabel();
+        lbNombreUsuario = new javax.swing.JLabel();
+        lbFecha = new javax.swing.JLabel();
+        lbHora = new javax.swing.JLabel();
+        lbRol = new javax.swing.JLabel();
         barra_menu = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         itemCerrarSesion = new javax.swing.JMenuItem();
@@ -127,7 +157,7 @@ public class PlaPrincipal extends javax.swing.JFrame {
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 601, Short.MAX_VALUE)
+            .addGap(0, 698, Short.MAX_VALUE)
         );
 
         panelEscritorio.add(escritorio, java.awt.BorderLayout.CENTER);
@@ -181,6 +211,7 @@ public class PlaPrincipal extends javax.swing.JFrame {
         btnConfiguracion.setBackground(getForeground());
         btnConfiguracion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnConfiguracion.setForeground(getBackground());
+        btnConfiguracion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/config64.png"))); // NOI18N
         btnConfiguracion.setText("Configuración");
         btnConfiguracion.setToolTipText("Realizar la recepción de reciclaje");
         btnConfiguracion.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -197,25 +228,6 @@ public class PlaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        btnReportes.setBackground(getForeground());
-        btnReportes.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnReportes.setForeground(getBackground());
-        btnReportes.setText("Reportes");
-        btnReportes.setToolTipText("Realizar la recepción de reciclaje");
-        btnReportes.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnReportes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnReportes.setEnabled(false);
-        btnReportes.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnReportes.setMaximumSize(new java.awt.Dimension(105, 105));
-        btnReportes.setMinimumSize(new java.awt.Dimension(105, 105));
-        btnReportes.setPreferredSize(new java.awt.Dimension(105, 105));
-        btnReportes.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnReportes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReportesActionPerformed(evt);
-            }
-        });
-
         btnSalir.setBackground(getForeground());
         btnSalir.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnSalir.setForeground(getBackground());
@@ -224,7 +236,6 @@ public class PlaPrincipal extends javax.swing.JFrame {
         btnSalir.setToolTipText("Ajustes del sistema");
         btnSalir.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnSalir.setEnabled(false);
         btnSalir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSalir.setMaximumSize(new java.awt.Dimension(105, 105));
         btnSalir.setMinimumSize(new java.awt.Dimension(105, 105));
@@ -236,24 +247,76 @@ public class PlaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jPanel1.setBackground(getForeground());
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.setForeground(getBackground());
+
+        lbImagenUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbImagenUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pefil64.png"))); // NOI18N
+
+        lbNombreUsuario.setForeground(panel_mantenimiento.getBackground());
+        lbNombreUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbNombreUsuario.setText("Usuario");
+
+        lbFecha.setForeground(panel_mantenimiento.getBackground());
+        lbFecha.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbFecha.setText("Fecha");
+
+        lbHora.setForeground(panel_mantenimiento.getBackground());
+        lbHora.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbHora.setText("Hora");
+
+        lbRol.setForeground(panel_mantenimiento.getBackground());
+        lbRol.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbRol.setText("Rol");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbNombreUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbImagenUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbHora, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbRol, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(lbNombreUsuario)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbImagenUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(lbRol)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbHora, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout panel_mantenimientoLayout = new javax.swing.GroupLayout(panel_mantenimiento);
         panel_mantenimiento.setLayout(panel_mantenimientoLayout);
         panel_mantenimientoLayout.setHorizontalGroup(
             panel_mantenimientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_mantenimientoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panel_mantenimientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel_mantenimientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnConfiguracion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRepositorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(btnReportes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(panel_mantenimientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnConfiguracion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRepositorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panel_mantenimientoLayout.setVerticalGroup(
             panel_mantenimientoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_mantenimientoLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_mantenimientoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnRepositorio, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -261,8 +324,8 @@ public class PlaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnConfiguracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -336,7 +399,7 @@ public class PlaPrincipal extends javax.swing.JFrame {
                 venUsu.setSelected(true);
             }
         } catch (PropertyVetoException ex) {
-            Logger.getLogger(PlaPrincipal.class
+            Logger.getLogger(FPlanificacion.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnUsuariosActionPerformed
@@ -352,7 +415,7 @@ public class PlaPrincipal extends javax.swing.JFrame {
                 venRep.setSelected(true);
             }
         } catch (PropertyVetoException ex) {
-            Logger.getLogger(PlaPrincipal.class
+            Logger.getLogger(FPlanificacion.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnRepositorioActionPerformed
@@ -360,10 +423,6 @@ public class PlaPrincipal extends javax.swing.JFrame {
     private void itemCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarSesionActionPerformed
         btnSalirActionPerformed(evt);
     }//GEN-LAST:event_itemCerrarSesionActionPerformed
-
-    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
-
-    }//GEN-LAST:event_btnReportesActionPerformed
 
     private void itemContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemContactoActionPerformed
         try {
@@ -376,7 +435,7 @@ public class PlaPrincipal extends javax.swing.JFrame {
                 venCont.setSelected(true);
             }
         } catch (PropertyVetoException ex) {
-            Logger.getLogger(PlaPrincipal.class
+            Logger.getLogger(FPlanificacion.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_itemContactoActionPerformed
@@ -396,19 +455,19 @@ public class PlaPrincipal extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PlaPrincipal.class
+            java.util.logging.Logger.getLogger(FPlanificacion.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PlaPrincipal.class
+            java.util.logging.Logger.getLogger(FPlanificacion.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PlaPrincipal.class
+            java.util.logging.Logger.getLogger(FPlanificacion.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PlaPrincipal.class
+            java.util.logging.Logger.getLogger(FPlanificacion.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
@@ -417,13 +476,18 @@ public class PlaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar barra_menu;
     private javax.swing.JButton btnConfiguracion;
-    private javax.swing.JButton btnReportes;
     private javax.swing.JButton btnRepositorio;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnUsuarios;
     private javax.swing.JDesktopPane escritorio;
     private javax.swing.JMenuItem itemCerrarSesion;
     private javax.swing.JMenuItem itemContacto;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lbFecha;
+    private javax.swing.JLabel lbHora;
+    private javax.swing.JLabel lbImagenUsuario;
+    private javax.swing.JLabel lbNombreUsuario;
+    private javax.swing.JLabel lbRol;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuSoporte2;
     private javax.swing.JPanel panelEscritorio;

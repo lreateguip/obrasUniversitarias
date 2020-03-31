@@ -24,7 +24,7 @@ public class UsuarioDAO {
     private ResultSet rs;
     private Conexion micon;
 
-    public Usuario consulta_usuario(String pusuario, String pclave) {
+    public Usuario consulta_usuario(String pusuario, String pcontraseña) {
         micon = new Conexion();
         Usuario usuLog = null;
         con = micon.getConection();
@@ -35,14 +35,14 @@ public class UsuarioDAO {
         try {
             ps = con.prepareStatement(query);
             ps.setString(1, pusuario);
-            ps.setString(2, pclave);
+            ps.setString(2, pcontraseña);
 
             rs = ps.executeQuery();
             if (rs.next()) {
                 usuLog = new Usuario();
                 usuLog.setId(rs.getInt("id"));
                 usuLog.setUsuario(rs.getString("usuario"));
-                usuLog.setContraseña(rs.getString("clave"));
+                usuLog.setContraseña(rs.getString("contraseña"));
                 usuLog.setNombre(rs.getString("nombre"));
                 usuLog.setRol(rs.getString("rol"));
                 usuLog.setEstado(rs.getString("estado"));
@@ -79,7 +79,7 @@ public class UsuarioDAO {
                 Usuario usu = new Usuario();
                 usu.setId(rs.getInt("id"));
                 usu.setUsuario(rs.getString("usuario"));
-                usu.setContraseña(rs.getString("clave"));
+                usu.setContraseña(rs.getString("contraseña"));
                 usu.setNombre(rs.getString("nombre"));
                 usu.setRol(rs.getString("rol"));
                 usu.setEstado(rs.getString("estado"));

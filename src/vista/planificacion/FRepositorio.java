@@ -1,4 +1,4 @@
-package vista;
+package vista.planificacion;
 
 import java.awt.Component;
 import java.awt.event.KeyEvent;
@@ -59,7 +59,7 @@ public class FRepositorio extends javax.swing.JInternalFrame {
     }
 
     private void actualizarDatosLog() {
-        lblUsuarioLogDato.setText(usuLog.getUsuario());
+        setTitle("VENTANA REPOSITORIO - " + usuLog.getUsuario());
         lblNombreLogDato.setText(usuLog.getNombre());
     }
 
@@ -149,11 +149,11 @@ public class FRepositorio extends javax.swing.JInternalFrame {
     private void consultarCriterio(String criterio) {
         lstArchivos = new ArrayList<>();
         String imagen;//PARA RUTA DE LA IMAGEN DE ARCHIVO
-        
+
         panel_repositorio.removeAll();//LIMPIAMOS TODO EL PANEL ANTES DE CONSULTAR LOS ARCHIVOS
-        
+
         lstArchivos = docDAO.consultarArchivosPorCriterio(criterio); //OBTENEMOS LA LISTA DE TODOS LOS ARCHIVOS DE LA BASE DE DATOS
-        
+
         for (Archivo archivo : lstArchivos) {
 
             switch (archivo.getExtension().toLowerCase()) {
@@ -274,15 +274,16 @@ public class FRepositorio extends javax.swing.JInternalFrame {
             DefaultListModel modelo = new DefaultListModel();
             lstTitulos.setModel(modelo);
 
+            String usuario = usuLog.getNombre();
+
             for (File file : ARCHIVOS) {
                 String nombre = file.getName().substring(0, file.getName().indexOf("."));
                 String ext = file.getName().substring(file.getName().indexOf(".") + 1, file.getName().length());
                 long TamañoB = file.length();
                 String rutaOrigen = file.getAbsolutePath();
-                //String fecha = lbbFechaDato.getText();
-                String usuario = lblUsuarioLogDato.getText();
-
+                
                 modelo.addElement(file.getName());
+                
                 Archivo arcSubir = new Archivo();
                 arcSubir.setTitulo(nombre);
                 arcSubir.setTamañoBytes(TamañoB);
@@ -344,10 +345,8 @@ public class FRepositorio extends javax.swing.JInternalFrame {
         panel_principal = new javax.swing.JPanel();
         panel_titulo = new javax.swing.JPanel();
         lbtTitulo = new javax.swing.JLabel();
-        lblUsuarioLogDato = new javax.swing.JLabel();
         lblNombreLogDato = new javax.swing.JLabel();
         lbbFechaDato = new javax.swing.JLabel();
-        lblUsuarioLog = new javax.swing.JLabel();
         lblNombreLog = new javax.swing.JLabel();
         lbbFecha = new javax.swing.JLabel();
         panel_datos = new javax.swing.JPanel();
@@ -377,17 +376,13 @@ public class FRepositorio extends javax.swing.JInternalFrame {
         panel_titulo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 2, true));
         panel_titulo.setForeground(new java.awt.Color(255, 255, 255));
         panel_titulo.setOpaque(false);
-        panel_titulo.setPreferredSize(new java.awt.Dimension(930, 80));
+        panel_titulo.setPreferredSize(new java.awt.Dimension(930, 50));
 
         lbtTitulo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lbtTitulo.setForeground(panel_titulo.getForeground());
         lbtTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbtTitulo.setText("REPOSITORIO DE ARCHIVOS");
         lbtTitulo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        lblUsuarioLogDato.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        lblUsuarioLogDato.setForeground(panel_titulo.getForeground());
-        lblUsuarioLogDato.setText("usuario:");
 
         lblNombreLogDato.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblNombreLogDato.setForeground(panel_titulo.getForeground());
@@ -396,10 +391,6 @@ public class FRepositorio extends javax.swing.JInternalFrame {
         lbbFechaDato.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lbbFechaDato.setForeground(panel_titulo.getForeground());
         lbbFechaDato.setText("Fecha:");
-
-        lblUsuarioLog.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        lblUsuarioLog.setForeground(panel_titulo.getForeground());
-        lblUsuarioLog.setText("usuario:");
 
         lblNombreLog.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblNombreLog.setForeground(panel_titulo.getForeground());
@@ -421,36 +412,27 @@ public class FRepositorio extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lbbFechaDato, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(panel_tituloLayout.createSequentialGroup()
-                        .addGroup(panel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblUsuarioLog)
-                            .addComponent(lblNombreLog))
+                        .addComponent(lblNombreLog)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblUsuarioLogDato, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblNombreLogDato, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE))))
+                        .addComponent(lblNombreLogDato, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(lbtTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 685, Short.MAX_VALUE)
+                .addComponent(lbtTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 612, Short.MAX_VALUE)
                 .addGap(18, 18, 18))
         );
 
-        panel_tituloLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {lbbFecha, lblNombreLog, lblUsuarioLog});
+        panel_tituloLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {lbbFecha, lblNombreLog});
 
         panel_tituloLayout.setVerticalGroup(
             panel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_tituloLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbtTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(panel_tituloLayout.createSequentialGroup()
-                        .addGroup(panel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panel_tituloLayout.createSequentialGroup()
-                                .addComponent(lblUsuarioLog)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(panel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lblNombreLog)
-                                    .addComponent(lblNombreLogDato)))
-                            .addComponent(lblUsuarioLogDato))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(lbtTitulo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_tituloLayout.createSequentialGroup()
+                        .addGroup(panel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblNombreLog)
+                            .addComponent(lblNombreLogDato))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbbFechaDato)
                             .addComponent(lbbFecha))))
@@ -609,7 +591,7 @@ public class FRepositorio extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panel_principal, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
+            .addComponent(panel_principal, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE)
         );
 
         pack();
@@ -655,8 +637,6 @@ public class FRepositorio extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lbbFechaDato;
     private javax.swing.JLabel lblNombreLog;
     private javax.swing.JLabel lblNombreLogDato;
-    private javax.swing.JLabel lblUsuarioLog;
-    private javax.swing.JLabel lblUsuarioLogDato;
     private javax.swing.JLabel lbtTitulo;
     private javax.swing.JList<String> lstTitulos;
     private javax.swing.JPanel panel_datos;

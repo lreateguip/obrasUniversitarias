@@ -23,19 +23,19 @@ public class Dialogo extends javax.swing.JDialog {
         setResizable(false);
         initComponents();
     }
-    
-    public void mostrarCuadroInformacion(JDialog parent, String titulo, String texto){
+
+    public void mostrarCuadroInformacion(JDialog parent, String titulo, String texto) {
         setTitle(titulo);
-        lbInfTexto.setText(texto);
-        
+        getContentPane().removeAll();
+        add(new PnlInformacion());
         setLocationRelativeTo(parent);
         setVisible(true);
     }
-    
-    public void mostrarCuadroConfirmacion(JDialog parent, String titulo, String texto){
+
+    public void mostrarCuadroConfirmacion(JDialog parent, String titulo, String texto) {
         setTitle(titulo);
-        lbInfTexto.setText(texto);
-      
+        getContentPane().removeAll();
+        add(new PnlConfirmacion());
         setLocationRelativeTo(parent);
         setVisible(true);
     }
@@ -49,177 +49,15 @@ public class Dialogo extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlPrincipal = new rojeru_san.RSPanelsSlider();
-        pnlConfirmacion = new javax.swing.JPanel();
-        lblImagen = new javax.swing.JLabel();
-        lbConfTexto = new javax.swing.JLabel();
-        btnConfSI = new rojeru_san.RSButton();
-        btnConfNO = new rojeru_san.RSButton();
-        pnlInformacion = new javax.swing.JPanel();
-        lblImagen1 = new javax.swing.JLabel();
-        btnInfOK = new rojeru_san.RSButton();
-        lbInfTexto = new javax.swing.JLabel();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        pnlConfirmacion.setBackground(new java.awt.Color(0, 102, 255));
-        pnlConfirmacion.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
-        pnlConfirmacion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-
-        lblImagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/LogoUG32.png"))); // NOI18N
-
-        lbConfTexto.setForeground(new java.awt.Color(255, 255, 255));
-        lbConfTexto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbConfTexto.setText("Información");
-        lbConfTexto.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        btnConfSI.setBackground(new java.awt.Color(255, 255, 255));
-        btnConfSI.setForeground(new java.awt.Color(0, 112, 192));
-        btnConfSI.setText("SI");
-        btnConfSI.setColorText(new java.awt.Color(0, 112, 192));
-        btnConfSI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConfSIActionPerformed(evt);
-            }
-        });
-
-        btnConfNO.setBackground(new java.awt.Color(255, 255, 255));
-        btnConfNO.setForeground(new java.awt.Color(0, 112, 192));
-        btnConfNO.setText("NO");
-        btnConfNO.setColorText(new java.awt.Color(0, 112, 192));
-        btnConfNO.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConfNOActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnlConfirmacionLayout = new javax.swing.GroupLayout(pnlConfirmacion);
-        pnlConfirmacion.setLayout(pnlConfirmacionLayout);
-        pnlConfirmacionLayout.setHorizontalGroup(
-            pnlConfirmacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlConfirmacionLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnConfSI, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(105, 105, 105)
-                .addComponent(btnConfNO, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlConfirmacionLayout.createSequentialGroup()
-                .addGroup(pnlConfirmacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlConfirmacionLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lbConfTexto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(pnlConfirmacionLayout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        pnlConfirmacionLayout.setVerticalGroup(
-            pnlConfirmacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlConfirmacionLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addComponent(lblImagen)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbConfTexto, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlConfirmacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnConfNO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnConfSI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
-        pnlPrincipal.add(pnlConfirmacion, "card2");
-
-        pnlInformacion.setBackground(new java.awt.Color(0, 102, 255));
-        pnlInformacion.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
-        pnlInformacion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-
-        lblImagen1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblImagen1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/LogoUG32.png"))); // NOI18N
-
-        btnInfOK.setBackground(new java.awt.Color(255, 255, 255));
-        btnInfOK.setForeground(new java.awt.Color(0, 112, 192));
-        btnInfOK.setText("OK");
-        btnInfOK.setColorText(new java.awt.Color(0, 112, 192));
-        btnInfOK.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInfOKActionPerformed(evt);
-            }
-        });
-
-        lbInfTexto.setForeground(new java.awt.Color(255, 255, 255));
-        lbInfTexto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbInfTexto.setText("Información");
-        lbInfTexto.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        javax.swing.GroupLayout pnlInformacionLayout = new javax.swing.GroupLayout(pnlInformacion);
-        pnlInformacion.setLayout(pnlInformacionLayout);
-        pnlInformacionLayout.setHorizontalGroup(
-            pnlInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlInformacionLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(lblImagen1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(20, 20, 20))
-            .addGroup(pnlInformacionLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lbInfTexto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlInformacionLayout.createSequentialGroup()
-                .addContainerGap(126, Short.MAX_VALUE)
-                .addComponent(btnInfOK, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(117, 117, 117))
-        );
-        pnlInformacionLayout.setVerticalGroup(
-            pnlInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlInformacionLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addComponent(lblImagen1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbInfTexto, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnInfOK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        pnlPrincipal.add(pnlInformacion, "card3");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        setMaximumSize(new java.awt.Dimension(361, 197));
+        setMinimumSize(new java.awt.Dimension(361, 197));
+        setPreferredSize(new java.awt.Dimension(340, 220));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnConfSIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfSIActionPerformed
-        dispose();
-    }//GEN-LAST:event_btnConfSIActionPerformed
 
-    private void btnInfOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfOKActionPerformed
-        dispose();
-    }//GEN-LAST:event_btnInfOKActionPerformed
-
-    private void btnConfNOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfNOActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnConfNOActionPerformed
-
-   
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private rojeru_san.RSButton btnConfNO;
-    private rojeru_san.RSButton btnConfSI;
-    private rojeru_san.RSButton btnInfOK;
-    private javax.swing.JLabel lbConfTexto;
-    private javax.swing.JLabel lbInfTexto;
-    private javax.swing.JLabel lblImagen;
-    private javax.swing.JLabel lblImagen1;
-    private javax.swing.JPanel pnlConfirmacion;
-    private javax.swing.JPanel pnlInformacion;
-    private rojeru_san.RSPanelsSlider pnlPrincipal;
     // End of variables declaration//GEN-END:variables
 }

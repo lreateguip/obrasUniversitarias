@@ -7,18 +7,19 @@ import javax.swing.JOptionPane;
 public class Conexion {
     private  Connection conection;
         //Parametros de Conexion servidor
-        //final String BD = "bd_diou";
-	//final String User="us_obras";
-        //final String password="Un1v3rs1t@r1@s";
+//        final String BD = "3366916_diou";
+//	  final String User="3366916_diou";
+//        final String password="0brasUn1v3rs1tar1as";
         
         //parametros de conexión local
         final String BD = "diou";
 	final String User="root";
 	final String password="";
 
-        //final String cadenaConexion="jdbc:mysql://db4free.net:3306/"+BD;
-        final String cadenaConexion="jdbc:mysql://localhost:3306/"+BD+"?useServerPrepStmts=true";
-	//constructor para la clase
+        //final String cadenaConexion="jdbc:mysql://fdb20.atspace.me:3306/"+BD;
+        final String cadenaConexion="jdbc:mysql://localhost:3306/"+BD;
+	
+        //constructor para la clase
 	public Conexion(){
 		this.conection=null;
 	}

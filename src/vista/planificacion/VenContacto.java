@@ -1,4 +1,4 @@
-package vista;
+package vista.planificacion;
 
 public class VenContacto extends javax.swing.JInternalFrame {
 

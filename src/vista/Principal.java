@@ -5,6 +5,7 @@
  */
 package vista;
 
+import vista.planificacion.FRLogin;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.IOException;
