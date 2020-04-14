@@ -10,8 +10,8 @@ import modelo.planificacionDTO.Usuario;
 
 public class FUsuario extends javax.swing.JInternalFrame {
 
-    private int id;
     UsuarioDAO usuDao;
+    private int id = 0;
 
     public FUsuario() {
         initComponents();
@@ -41,10 +41,49 @@ public class FUsuario extends javax.swing.JInternalFrame {
         String CONTRASEÑA = txtContraseña.getText();
         String NOMBRE = txtNombre.getText();
         String ROL = cmbRol.getSelectedItem().toString();
-        String ESTADO = cmbEstado.getSelectedItem().toString().substring(1);
+        String ESTADO = cmbEstado.getSelectedItem().toString();
 
+        //creamos la instancia del usuario a insertar
+        Usuario u = new Usuario(id, USUARIO, CONTRASEÑA, NOMBRE, ESTADO, ROL);
+        
+        System.out.println("id: "+id);
+
+        if(id==0){
+            if (usuDao.insertar_usuario(u) == 1) {
+                JOptionPane.showMessageDialog(this, "Usuario registrado con éxito", "REGISTRO DE USUARIO", JOptionPane.INFORMATION_MESSAGE);
+                limpiarCampos();
+                activarCampos(false);
+                btnGuardar.setEnabled(false);
+                btnBuscarActionPerformed(null);
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario no registrado", "REGISTRO DE USUARIO", JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            if (usuDao.actualizar_usuario(u) == 1) {
+            JOptionPane.showMessageDialog(this, "Usuario actualizado con éxito", "ACTUALIZACIÓN DE USUARIO", JOptionPane.INFORMATION_MESSAGE);
+            limpiarCampos();
+            activarCampos(false);
+            btnGuardar.setEnabled(false);
+            btnBuscarActionPerformed(null);
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuario no actualizado", "ACTUALIZACIÓN DE USUARIO", JOptionPane.ERROR_MESSAGE);
+        }
+        }
     }
 
+    private void eliminarUsuario(){
+        if(id!=0){
+            if (usuDao.eliminar_usuario(id) == 1) {
+                JOptionPane.showMessageDialog(this, "Usuario eliminado con éxito", "ELIMINACIÓN DE USUARIO", JOptionPane.INFORMATION_MESSAGE);
+                limpiarCampos();
+                activarCampos(false);
+                btnBuscarActionPerformed(null);
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario no eliminado", "ELIMINACIÓN DE USUARIO", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
     private void obtenerDatosUsuarios() {
         //obtenemos el valor de la fila seleccionada por el clic
         int fila = tblUsuario.getSelectedRow();
@@ -99,7 +138,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
         cmbRol.setSelectedIndex(0);
         cmbEstado.setSelectedIndex(0);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -124,7 +163,6 @@ public class FUsuario extends javax.swing.JInternalFrame {
         cmbRol = new javax.swing.JComboBox<>();
         cmbEstado = new javax.swing.JComboBox<>();
         txtContraseña = new rojeru_san.RSMPassView();
-        btnPDF = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         panelControl = new javax.swing.JPanel();
         btnNuevo = new javax.swing.JButton();
@@ -153,7 +191,8 @@ public class FUsuario extends javax.swing.JInternalFrame {
         lbTitulo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lbTitulo.setForeground(getForeground());
         lbTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbTitulo.setText("Mantenimiento de usuarios");
+        lbTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/usuarios16.png"))); // NOI18N
+        lbTitulo.setText("MANTENIMIENTO DE USUARIOS");
 
         panelUsuarios.setBackground(new java.awt.Color(204, 204, 204));
         panelUsuarios.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -194,10 +233,11 @@ public class FUsuario extends javax.swing.JInternalFrame {
         });
         tblUsuario.setToolTipText("Tabla registros de productos");
         tblUsuario.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        tblUsuario.setColumnSelectionAllowed(true);
         tblUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tblUsuario.setFocusable(false);
         tblUsuario.setRowHeight(20);
+        tblUsuario.setSelectionBackground(new java.awt.Color(0, 102, 255));
+        tblUsuario.setSelectionForeground(new java.awt.Color(255, 255, 255));
         tblUsuario.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -248,7 +288,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
         pnlIzq.setOpaque(false);
 
         panelCampos2.setBackground(getBackground());
-        panelCampos2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de producto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelCampos2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de usuario", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
         panelCampos2.setOpaque(false);
 
         jLabel2.setFont(pnlIzq.getFont());
@@ -289,7 +329,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
         cmbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECCIONE", "ADMINISTRADOR", "ASISTENTE" }));
 
         cmbEstado.setFont(pnlIzq.getFont());
-        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECCIONE", "ACTIVADO", "INACTIVADO" }));
+        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECCIONE", "ACTIVO", "INACTIVO" }));
 
         txtContraseña.setFont(pnlIzq.getFont());
         txtContraseña.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -347,18 +387,6 @@ public class FUsuario extends javax.swing.JInternalFrame {
 
         panelCampos2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtContraseña, txtNombre, txtUsuario});
 
-        btnPDF.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
-        btnPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/btnReporte64.png"))); // NOI18N
-        btnPDF.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnPDF.setMaximumSize(new java.awt.Dimension(95, 35));
-        btnPDF.setMinimumSize(new java.awt.Dimension(95, 35));
-        btnPDF.setPreferredSize(new java.awt.Dimension(95, 35));
-        btnPDF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPDFActionPerformed(evt);
-            }
-        });
-
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/find.png"))); // NOI18N
         btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnBuscar.setMaximumSize(new java.awt.Dimension(50, 50));
@@ -380,8 +408,6 @@ public class FUsuario extends javax.swing.JInternalFrame {
                     .addComponent(panelCampos2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pnlIzqLayout.createSequentialGroup()
                         .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -391,9 +417,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(panelCampos2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnlIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnPDF, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -492,7 +516,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
                             .addComponent(pnlIzq, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(panelControl, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 836, Short.MAX_VALUE))
+                        .addComponent(panelUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 635, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lbTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(4, 4, 4)))
@@ -530,19 +554,17 @@ public class FUsuario extends javax.swing.JInternalFrame {
         txtUsuario.requestFocus();
         btnGuardar.setEnabled(true);
         btnLimpiar.setEnabled(true);
+        id =0;
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         if (validarCampos()) {
-            if (JOptionPane.showConfirmDialog(this, "Desea realizar esta operación", "Registro de donante", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION) {
-
-                limpiarCampos();
-                activarCampos(false);
-                btnGuardar.setEnabled(false);
+            if (JOptionPane.showConfirmDialog(this, "Desea realizar esta operación", "Registro de usuario", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION) {
+                insertarUsuario();
             }
         }//fin validarCampos
         else {
-            JOptionPane.showMessageDialog(this, "Existen campos vacíos que debe llenar", "Registro de donante", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Existen campos vacíos que debe llenar", "Registro de usuario", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -564,9 +586,8 @@ public class FUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        if (JOptionPane.showConfirmDialog(this, "Desea eliminar este registro", "Registro de donante", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION) {
-
-            //DAODonante.obtenerDatosDonantes(tblDonantes);
+        if (JOptionPane.showConfirmDialog(this, "Desea eliminar este registro", "Eliminación de usuario", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION) {
+            eliminarUsuario();
             limpiarCampos();
             activarCampos(false);
             btnGuardar.setEnabled(false);
@@ -590,10 +611,6 @@ public class FUsuario extends javax.swing.JInternalFrame {
         Validaciones.resaltarVacio(evt);
     }//GEN-LAST:event_txtNombreKeyTyped
 
-    private void btnPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPDFActionPerformed
-        //imprimirReporteDonantes();
-    }//GEN-LAST:event_btnPDFActionPerformed
-
     private void btnLimpiar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar1ActionPerformed
         FormatoTablas.limpiarTabla(tblUsuario);
     }//GEN-LAST:event_btnLimpiar1ActionPerformed
@@ -612,7 +629,6 @@ public class FUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnLimpiar1;
     private javax.swing.JButton btnNuevo;
-    private javax.swing.JButton btnPDF;
     private javax.swing.JComboBox<String> cmbEstado;
     private javax.swing.JComboBox<String> cmbRol;
     private javax.swing.JLabel jLabel2;

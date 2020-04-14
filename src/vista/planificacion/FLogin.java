@@ -1,27 +1,24 @@
 package vista.planificacion;
 
-import dialogos.Dialogo;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import modelo.planificacionDAO.UsuarioDAO;
 import modelo.planificacionDTO.Usuario;
 
-public class FRLogin extends javax.swing.JDialog {
+public class FLogin extends javax.swing.JDialog {
 
     private FPlanificacion venPlaPri = null;
     UsuarioDAO consultadao = null;
-    dialogos.Dialogo dialogo;
-    private ArrayList<Usuario> lstUsuarios;
+    //private ArrayList<Usuario> lstUsuarios;
 
-    public FRLogin(Frame frame, boolean bln) throws IOException {
+    public FLogin(Frame frame, boolean bln) throws IOException {
         super(frame, bln);
-        this.dialogo = new Dialogo(null);
         initComponents();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -38,8 +35,7 @@ public class FRLogin extends javax.swing.JDialog {
         String pclave = txtClave.getText();
 
         if (pusuario.isEmpty() || pclave.isEmpty()) {
-            //JOptionPane.showMessageDialog(this, "Debe ingresar las credenciales de acceso", "INICIO SESION", JOptionPane.WARNING_MESSAGE);
-            dialogo.mostrarCuadroInformacion(this, "INICIO SESIÓN","Debe ingresar las credenciales de acceso");
+            JOptionPane.showMessageDialog(this, "Debe ingresar las credenciales de acceso", "INICIO SESION", JOptionPane.WARNING_MESSAGE);
         } else {
             logiarse(pusuario, pclave);
         }
@@ -50,7 +46,7 @@ public class FRLogin extends javax.swing.JDialog {
         Usuario usuLog = consultadao.consulta_usuario(pusuario, pcontraseña);
 
         if (usuLog == null) {
-            dialogo.mostrarCuadroInformacion(this, "INICIO SESIÓN", "Usuario y clave incorrecta");
+            JOptionPane.showMessageDialog(this, "Usuario y clave incorrecta", "INICIO SESION", JOptionPane.ERROR_MESSAGE);
         } else {
             inicarSesion(usuLog);
         }
@@ -63,10 +59,9 @@ public class FRLogin extends javax.swing.JDialog {
                 venPlaPri = new FPlanificacion(usuLog);
                 venPlaPri.setVisible(true);
             } catch (Exception ex) {
-                Logger.getLogger(FRLogin.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FLogin.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-
             venPlaPri.setVisible(true);
         }
         dispose();

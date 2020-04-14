@@ -131,8 +131,10 @@
                   <Connection component="panel_titulo" name="foreground" type="property"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/images/repositorio16.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="REPOSITORIO DE ARCHIVOS"/>
-                <Property name="horizontalTextPosition" type="int" value="0"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblNombreLogDato">

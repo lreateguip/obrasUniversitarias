@@ -3,6 +3,7 @@ package vista.planificacion;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.beans.PropertyVetoException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,6 +20,7 @@ public class FPlanificacion extends javax.swing.JFrame {
 
     private FUsuario venUsu = null;
     private FRepositorio venRep = null;
+    private FConfiguracion venConf = null;
     private VenContacto venCont = null;
     private Usuario usuLog = null;
 
@@ -27,7 +29,7 @@ public class FPlanificacion extends javax.swing.JFrame {
         initComponents();
         //ACTUALIZAMOS EL USUARIO QUE INICIÓ SESIÓN
         this.usuLog = usuLog;
-        //SEGUN EL ROL DEL USUSARIO ACTIVAMOS LOS COMPONENTES PERMITIDOS
+        //SEGUN EL ROL DEL USUARIO ACTIVAMOS LOS COMPONENTES PERMITIDOS
         habilitarOpciones(this.usuLog.getRol());
         //CONFIGURACIÓN BASICA DE ESTA VENTANA
         configurarVentana();
@@ -55,7 +57,7 @@ public class FPlanificacion extends javax.swing.JFrame {
     }
 
     private void configurarVentana() {
-        setTitle("JEFATURA DE PLANIFICACCIÓN - USUARIO: " + usuLog.getUsuario());
+        setTitle("JEFATURA DE PLANIFICACIÓN - USUARIO: " + usuLog.getUsuario());
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
@@ -216,7 +218,6 @@ public class FPlanificacion extends javax.swing.JFrame {
         btnConfiguracion.setToolTipText("Realizar la recepción de reciclaje");
         btnConfiguracion.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnConfiguracion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnConfiguracion.setEnabled(false);
         btnConfiguracion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnConfiguracion.setMaximumSize(new java.awt.Dimension(105, 105));
         btnConfiguracion.setMinimumSize(new java.awt.Dimension(105, 105));
@@ -385,7 +386,17 @@ public class FPlanificacion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnConfiguracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfiguracionActionPerformed
-
+       if (venConf == null) {
+            try {
+                venConf = new FConfiguracion(this, false, usuLog);
+                venConf.setVisible(true);
+            } catch (IOException ex) {
+                Logger.getLogger(getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            venConf.setVisible(true);
+            venConf.limpiarContraseñas();
+        }
     }//GEN-LAST:event_btnConfiguracionActionPerformed
 
     private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed

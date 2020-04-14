@@ -151,7 +151,7 @@ public class ArchivoDAO {
         ArrayList<Archivo> lstArchivos = new ArrayList<>();
 
         try {
-            String sql = "CALL P_CONSULTAR_POR_CRITERIO(?)";
+            String sql = "CALL P_CONSULTAR_ARCHIVO_POR_CRITERIO(?)";
             java.sql.PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, criterio);
 

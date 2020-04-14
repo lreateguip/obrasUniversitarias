@@ -5,7 +5,7 @@
  */
 package vista;
 
-import vista.planificacion.FRLogin;
+import vista.planificacion.FLogin;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class Principal extends javax.swing.JFrame {
      * Creates new form Principal
      */
     private static Principal me;
-    private static FRLogin venLogJefPla = null;
+    private static FLogin venLogJefPla = null;
 
     private Principal() {
         initComponents();
@@ -207,7 +207,7 @@ public class Principal extends javax.swing.JFrame {
     private void btnPlanificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlanificacionActionPerformed
         if (venLogJefPla == null) {
             try {
-                venLogJefPla = new FRLogin(this, false);
+                venLogJefPla = new FLogin(this, false);
                 venLogJefPla.setVisible(true);
             } catch (IOException ex) {
                 Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);

@@ -381,8 +381,8 @@ public class FRepositorio extends javax.swing.JInternalFrame {
         lbtTitulo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lbtTitulo.setForeground(panel_titulo.getForeground());
         lbtTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbtTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/repositorio16.png"))); // NOI18N
         lbtTitulo.setText("REPOSITORIO DE ARCHIVOS");
-        lbtTitulo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         lblNombreLogDato.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblNombreLogDato.setForeground(panel_titulo.getForeground());
