@@ -21,7 +21,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
 
         FormatoTablas.setOrdenar(tblUsuario);
         FormatoTablas.setCellRender(tblUsuario);
-        activarCampos(false);
+        activarCamposUsuario(false);
     }
 
     private void consultarUsuarios() {
@@ -29,11 +29,8 @@ public class FUsuario extends javax.swing.JInternalFrame {
         for (Usuario usuario : usuDao.consulta_usuarios()) {
             ((DefaultTableModel) tblUsuario.getModel()).addRow(usuario.getFila());
         }
-        usuDao.consulta_usuarios();
-    }
-
-    public static void main(String args[]) {
-        new FUsuario().setVisible(true);
+        int count = tblUsuario.getRowCount();
+        lblObservacion.setText("Se encontrarón " + count + " registros");
     }
 
     private void insertarUsuario() {
@@ -45,46 +42,43 @@ public class FUsuario extends javax.swing.JInternalFrame {
 
         //creamos la instancia del usuario a insertar
         Usuario u = new Usuario(id, USUARIO, CONTRASEÑA, NOMBRE, ESTADO, ROL);
-        
-        System.out.println("id: "+id);
-
-        if(id==0){
+        if (id == 0) {
             if (usuDao.insertar_usuario(u) == 1) {
                 JOptionPane.showMessageDialog(this, "Usuario registrado con éxito", "REGISTRO DE USUARIO", JOptionPane.INFORMATION_MESSAGE);
-                limpiarCampos();
-                activarCampos(false);
+                limpiarCamposUsuario();
+                activarCamposUsuario(false);
                 btnGuardar.setEnabled(false);
                 btnBuscarActionPerformed(null);
             } else {
                 JOptionPane.showMessageDialog(this, "Usuario no registrado", "REGISTRO DE USUARIO", JOptionPane.ERROR_MESSAGE);
             }
-        }else{
-            if (usuDao.actualizar_usuario(u) == 1) {
-            JOptionPane.showMessageDialog(this, "Usuario actualizado con éxito", "ACTUALIZACIÓN DE USUARIO", JOptionPane.INFORMATION_MESSAGE);
-            limpiarCampos();
-            activarCampos(false);
-            btnGuardar.setEnabled(false);
-            btnBuscarActionPerformed(null);
         } else {
-            JOptionPane.showMessageDialog(this, "Usuario no actualizado", "ACTUALIZACIÓN DE USUARIO", JOptionPane.ERROR_MESSAGE);
-        }
+            if (usuDao.actualizar_usuario(u) == 1) {
+                JOptionPane.showMessageDialog(this, "Usuario actualizado con éxito", "ACTUALIZACIÓN DE USUARIO", JOptionPane.INFORMATION_MESSAGE);
+                limpiarCamposUsuario();
+                activarCamposUsuario(false);
+                btnGuardar.setEnabled(false);
+                btnBuscarActionPerformed(null);
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario no actualizado", "ACTUALIZACIÓN DE USUARIO", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
-    private void eliminarUsuario(){
-        if(id!=0){
+    private void eliminarUsuario() {
+        if (id != 0) {
             if (usuDao.eliminar_usuario(id) == 1) {
                 JOptionPane.showMessageDialog(this, "Usuario eliminado con éxito", "ELIMINACIÓN DE USUARIO", JOptionPane.INFORMATION_MESSAGE);
-                limpiarCampos();
-                activarCampos(false);
+                limpiarCamposUsuario();
+                activarCamposUsuario(false);
                 btnBuscarActionPerformed(null);
             } else {
                 JOptionPane.showMessageDialog(this, "Usuario no eliminado", "ELIMINACIÓN DE USUARIO", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
-    
-    private void obtenerDatosUsuarios() {
+
+    private void obtenerDatosUsuarioTabla() {
         //obtenemos el valor de la fila seleccionada por el clic
         int fila = tblUsuario.getSelectedRow();
         //obtenenos todos los datos de esa fila y asignamos esos valores a cada campo correspondiente
@@ -96,7 +90,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
         cmbEstado.setSelectedItem(tblUsuario.getValueAt(fila, 5));
     }//fin de método
 
-    private void activarCampos(boolean activar) {
+    private void activarCamposUsuario(boolean activar) {
         txtUsuario.setEnabled(activar);
         txtContraseña.setEnabled(activar);
         txtNombre.setEnabled(activar);
@@ -104,7 +98,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
         cmbEstado.setEnabled(activar);
     }
 
-    private boolean validarCampos() {
+    private boolean validarCamposUsuario() {
         boolean lleno = true;
         if (txtUsuario.getText().isEmpty()) {
             txtUsuario.setBackground(Color.yellow);
@@ -131,7 +125,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
         return lleno;
     }
 
-    private void limpiarCampos() {
+    private void limpiarCamposUsuario() {
         txtUsuario.setText("");
         txtContraseña.setText("");
         txtNombre.setText("");
@@ -146,7 +140,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
         lbTitulo = new javax.swing.JLabel();
         panelUsuarios = new javax.swing.JPanel();
         panelTabla = new javax.swing.JPanel();
-        scrollTablaDonantes = new javax.swing.JScrollPane();
+        scrollTablaUsuario = new javax.swing.JScrollPane();
         tblUsuario = new javax.swing.JTable();
         panelPiesR = new javax.swing.JPanel();
         lblObservacion = new javax.swing.JLabel();
@@ -201,10 +195,10 @@ public class FUsuario extends javax.swing.JInternalFrame {
         panelTabla.setBackground(new java.awt.Color(102, 102, 102));
         panelTabla.setLayout(new java.awt.BorderLayout());
 
-        scrollTablaDonantes.setBackground(getBackground());
-        scrollTablaDonantes.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollTablaDonantes.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollTablaDonantes.setAutoscrolls(true);
+        scrollTablaUsuario.setBackground(getBackground());
+        scrollTablaUsuario.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollTablaUsuario.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollTablaUsuario.setAutoscrolls(true);
 
         tblUsuario.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 51, 51), 2, true));
         tblUsuario.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -231,8 +225,9 @@ public class FUsuario extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tblUsuario.setToolTipText("Tabla registros de productos");
+        tblUsuario.setToolTipText("");
         tblUsuario.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        tblUsuario.setColumnSelectionAllowed(true);
         tblUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tblUsuario.setFocusable(false);
         tblUsuario.setRowHeight(20);
@@ -244,18 +239,21 @@ public class FUsuario extends javax.swing.JInternalFrame {
                 tblUsuarioMouseClicked(evt);
             }
         });
-        scrollTablaDonantes.setViewportView(tblUsuario);
+        scrollTablaUsuario.setViewportView(tblUsuario);
         tblUsuario.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         if (tblUsuario.getColumnModel().getColumnCount() > 0) {
             tblUsuario.getColumnModel().getColumn(0).setPreferredWidth(30);
+            tblUsuario.getColumnModel().getColumn(0).setMaxWidth(30);
+            tblUsuario.getColumnModel().getColumn(1).setMinWidth(200);
             tblUsuario.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tblUsuario.getColumnModel().getColumn(1).setMaxWidth(200);
             tblUsuario.getColumnModel().getColumn(2).setPreferredWidth(150);
             tblUsuario.getColumnModel().getColumn(3).setPreferredWidth(150);
             tblUsuario.getColumnModel().getColumn(4).setPreferredWidth(100);
-            tblUsuario.getColumnModel().getColumn(5).setPreferredWidth(50);
+            tblUsuario.getColumnModel().getColumn(5).setPreferredWidth(100);
         }
 
-        panelTabla.add(scrollTablaDonantes, java.awt.BorderLayout.CENTER);
+        panelTabla.add(scrollTablaUsuario, java.awt.BorderLayout.CENTER);
 
         panelUsuarios.add(panelTabla, java.awt.BorderLayout.CENTER);
 
@@ -416,7 +414,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
             .addGroup(pnlIzqLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelCampos2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 21, Short.MAX_VALUE)
                 .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -516,7 +514,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
                             .addComponent(pnlIzq, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(panelControl, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 635, Short.MAX_VALUE))
+                        .addComponent(panelUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lbTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(4, 4, 4)))
@@ -540,8 +538,8 @@ public class FUsuario extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUsuarioMouseClicked
-        activarCampos(false);
-        obtenerDatosUsuarios();
+        activarCamposUsuario(false);
+        obtenerDatosUsuarioTabla();
         btnGuardar.setEnabled(false);
         btnLimpiar.setEnabled(false);
         btnActualizar.setEnabled(true);
@@ -550,15 +548,15 @@ public class FUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tblUsuarioMouseClicked
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        activarCampos(true);
+        activarCamposUsuario(true);
         txtUsuario.requestFocus();
         btnGuardar.setEnabled(true);
         btnLimpiar.setEnabled(true);
-        id =0;
+        id = 0;
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        if (validarCampos()) {
+        if (validarCamposUsuario()) {
             if (JOptionPane.showConfirmDialog(this, "Desea realizar esta operación", "Registro de usuario", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION) {
                 insertarUsuario();
             }
@@ -569,7 +567,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        activarCampos(true);
+        activarCamposUsuario(true);
         btnGuardar.setEnabled(true);
         btnActualizar.setEnabled(false);
         btnEliminar.setEnabled(false);
@@ -577,8 +575,8 @@ public class FUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        limpiarCampos();
-        activarCampos(false);
+        limpiarCamposUsuario();
+        activarCamposUsuario(false);
         btnGuardar.setEnabled(false);
         btnEliminar.setEnabled(false);
         btnLimpiar.setEnabled(false);
@@ -588,8 +586,8 @@ public class FUsuario extends javax.swing.JInternalFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         if (JOptionPane.showConfirmDialog(this, "Desea eliminar este registro", "Eliminación de usuario", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION) {
             eliminarUsuario();
-            limpiarCampos();
-            activarCampos(false);
+            limpiarCamposUsuario();
+            activarCamposUsuario(false);
             btnGuardar.setEnabled(false);
             btnEliminar.setEnabled(false);
         }
@@ -597,12 +595,10 @@ public class FUsuario extends javax.swing.JInternalFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         consultarUsuarios();
-        int count = tblUsuario.getRowCount();
-        lblObservacion.setText("Se encontrarón " + count + " registros");
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        limpiarCampos();
+        limpiarCamposUsuario();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
@@ -644,7 +640,7 @@ public class FUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JPanel panelTabla;
     private javax.swing.JPanel panelUsuarios;
     private javax.swing.JPanel pnlIzq;
-    private javax.swing.JScrollPane scrollTablaDonantes;
+    private javax.swing.JScrollPane scrollTablaUsuario;
     private javax.swing.JTable tblUsuario;
     private rojeru_san.RSMPassView txtContraseña;
     private javax.swing.JTextField txtNombre;
