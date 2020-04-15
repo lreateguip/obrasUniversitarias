@@ -30,18 +30,14 @@ public class ArchivoDAO {
     private Connection con;
     private Conexion micon;
 
-    public ArchivoDAO() {
-        micon = new Conexion();
-        //obtener la Conexion a la bdd
-        con = micon.getConection();
-
-    }
-
-    public int guardarArchivo(Archivo archivo) {
+    public int insertarArchivo(Archivo archivo) {
         int res = 0;
 
+        micon = new Conexion();
+        con = micon.getConection();
+
         //sentencia de inserción
-        String sql = "INSERT INTO archivo (titulo, peso, fecha_guardado, extension, archivo,ruta, usuario) VALUES (?,?,?,?,?,?,?)";
+        String sql = "CALL P_ARCHIVO_INSERTAR(?,?,?,?,?,?)";
 
         try {
             File file = new File(archivo.getRuta());
@@ -51,16 +47,13 @@ public class ArchivoDAO {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, archivo.getTitulo());
             ps.setDouble(2, archivo.getTamañoMB());
-            ps.setString(3, archivo.getFecha());
-            ps.setString(4, archivo.getExtension());
-            ps.setBinaryStream(5, fis, (int) archivo.getTamañoBytes());
-            ps.setString(6, archivo.getRuta());
-            ps.setString(7, archivo.getUsuario());
+            ps.setString(3, archivo.getExtension());
+            ps.setBinaryStream(4, fis, (int) archivo.getTamañoBytes());
+            ps.setString(5, archivo.getRuta());
+            ps.setString(6, archivo.getUsuario());
             res = ps.executeUpdate();
 
         } catch (SQLException sqle) {
-            System.out.println(archivo.getTitulo());
-            System.out.println("Error en guardar ");
             System.out.println(sqle.getMessage());
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ArchivoDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,9 +70,11 @@ public class ArchivoDAO {
 
     public int eliminarArchivo(int id) {
         int res = 0;
-        
+        micon = new Conexion();
+        con = micon.getConection();
+
         //sentencia de inserción
-        String sql = "DELETE from archivo WHERE id = ?";
+        String sql = "CALL P_ARCHIVO_ELIMINAR(?)";
 
         try {
             //PREPARAR LA SENTENCIA Y PARAMETROA A EJECUTAR
@@ -104,11 +99,14 @@ public class ArchivoDAO {
     public ArrayList<Archivo> consultarArchivos() throws FileNotFoundException {
         InputStream input = null;
         FileOutputStream output = null;
-        
+
         ArrayList<Archivo> lstArchivos = new ArrayList<>();
 
+        micon = new Conexion();
+        con = micon.getConection();
+
         try {
-            String sql = "SELECT *FROM archivo";
+            String sql = "CALL P_ARCHIVO_CONSULTAR()";
             PreparedStatement ps = (PreparedStatement) con.prepareStatement(sql);
             //ps.setString(1, "A");
 
@@ -119,10 +117,10 @@ public class ArchivoDAO {
                 archivoSel.setId(rs.getInt("id"));
                 archivoSel.setTitulo(rs.getString("titulo"));
                 archivoSel.setTamañoBytes(rs.getLong("peso"));
-                archivoSel.setFecha(rs.getString("fecha_guardado"));
+                archivoSel.setFecha(rs.getTimestamp("fecha_guardado"));
                 archivoSel.setExtension(rs.getString("extension"));
                 archivoSel.setUsuario(rs.getString("usuario"));
-                archivoSel.setImput(rs.getBinaryStream("archivo"));
+                //archivoSel.setImput(rs.getBinaryStream("archivo"));
                 archivoSel.setRuta(rs.getString("ruta"));
                 //agregamos a la lista de archivos
                 lstArchivos.add(archivoSel);
@@ -147,11 +145,14 @@ public class ArchivoDAO {
     public ArrayList<Archivo> consultarArchivosPorCriterio(String criterio) {
         InputStream input = null;
         FileOutputStream output = null;
+        
+        micon = new Conexion();
+        con = micon.getConection();
 
         ArrayList<Archivo> lstArchivos = new ArrayList<>();
 
         try {
-            String sql = "CALL P_CONSULTAR_ARCHIVO_POR_CRITERIO(?)";
+            String sql = "CALL P_ARCHIVO_CONSULTAR_FILTRO(?)";
             java.sql.PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, criterio);
 
@@ -162,10 +163,10 @@ public class ArchivoDAO {
                 archivoSel.setId(rs.getInt("id"));
                 archivoSel.setTitulo(rs.getString("titulo"));
                 archivoSel.setTamañoBytes(rs.getLong("peso"));
-                archivoSel.setFecha(rs.getString("fecha_guardado"));
+                archivoSel.setFecha(rs.getTimestamp("fecha_guardado"));
                 archivoSel.setExtension(rs.getString("extension"));
                 archivoSel.setUsuario(rs.getString("usuario"));
-                archivoSel.setImput(rs.getBinaryStream("archivo"));
+                //archivoSel.setImput(rs.getBinaryStream("archivo"));
                 archivoSel.setRuta(rs.getString("ruta"));
                 //agregamos a la lista de archivos
                 lstArchivos.add(archivoSel);

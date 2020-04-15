@@ -6,6 +6,7 @@
 package modelo.planificacionDTO;
 
 import java.io.InputStream;
+import java.sql.Timestamp;
 
 /**
  *
@@ -20,12 +21,12 @@ public class Archivo {
     String extension;
     long tamañoBytes;
     String usuario;
-    String fecha;
+    Timestamp fecha;
     String ruta;
     String imagen;
     InputStream imput;
 
-    public Archivo(int id, String titulo, String extension, long tamaño, String usuario, String fecha, String ruta) {
+    public Archivo(int id, String titulo, String extension, long tamaño, String usuario, Timestamp fecha, String ruta) {
         this.id = id;
         this.titulo = titulo;
         this.extension = extension;
@@ -46,11 +47,11 @@ public class Archivo {
         this.id = id;
     }
 
-    public String getFecha() {
+    public Timestamp getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Timestamp fecha) {
         this.fecha = fecha;
     }
 

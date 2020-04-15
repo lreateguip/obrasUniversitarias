@@ -26,12 +26,10 @@ public class UsuarioDAO {
 
     public Usuario consulta_usuario(String pusuario, String pcontraseña) {
         micon = new Conexion();
-        Usuario usuLog = null;
         con = micon.getConection();
-        if (con == null) {
-            return null;
-        }
-        String query = "call P_CONSULTAR_USUARIO(?,?)";
+        Usuario usuLog = null;
+
+        String query = "call P_USUARIO_CONSULTAR_FILTRO(?,?)";
         try {
             ps = con.prepareStatement(query);
             ps.setString(1, pusuario);
@@ -64,12 +62,9 @@ public class UsuarioDAO {
     public ArrayList<Usuario> consulta_usuarios() {
         ArrayList<Usuario> lstUsuarios = new ArrayList<>();
         micon = new Conexion();
-
         con = micon.getConection();
-        if (con == null) {
-            return null;
-        }
-        String query = "call P_CONSULTAR_USUARIOS()";
+
+        String query = "call P_USUARIO_CONSULTAR()";
         try {
             ps = con.prepareStatement(query);
 
@@ -103,12 +98,9 @@ public class UsuarioDAO {
         int res = 0;
         micon = new Conexion();
         con = micon.getConection();
-        if (con == null) {
-            return 0;
-        }
 
         //sentencia de inserción
-        String sql = "call P_INSERTAR_USUARIO(?,?,?,?,?)";
+        String sql = "call P_USUARIO_INSERTAR(?,?,?,?,?)";
 
         try {
             //crear la sentencia preparada
@@ -121,7 +113,7 @@ public class UsuarioDAO {
             res = ps.executeUpdate();
 
         } catch (SQLException sqle) {
-            System.out.println("Error en guardar ");
+            System.out.println("Error en insertar ");
             System.out.println(sqle.getMessage());
         } finally {
             try {
@@ -138,12 +130,9 @@ public class UsuarioDAO {
         int res = 0;
         micon = new Conexion();
         con = micon.getConection();
-        if (con == null) {
-            return 0;
-        }
 
         //sentencia de inserción
-        String sql = "call P_ACTUALIZAR_USUARIO(?,?,?,?,?,?)";
+        String sql = "call P_USUARIO_ACTUALIZAR(?,?,?,?,?,?)";
 
         try {
             //crear la sentencia preparada
@@ -157,7 +146,7 @@ public class UsuarioDAO {
             res = ps.executeUpdate();
 
         } catch (SQLException sqle) {
-            System.out.println("Error en guardar ");
+            System.out.println("Error en actualizar ");
             System.out.println(sqle.getMessage());
         } finally {
             try {
@@ -174,12 +163,9 @@ public class UsuarioDAO {
         int res = 0;
         micon = new Conexion();
         con = micon.getConection();
-        if (con == null) {
-            return 0;
-        }
 
         //sentencia de inserción
-        String sql = "call P_ELIMINAR_USUARIO(?)";
+        String sql = "call P_USUARIO_ELIMINAR(?)";
 
         try {
             //crear la sentencia preparada
@@ -205,12 +191,9 @@ public class UsuarioDAO {
         int res = 0;
         micon = new Conexion();
         con = micon.getConection();
-        if (con == null) {
-            return 0;
-        }
-
+        
         //sentencia de inserción
-        String sql = "call P_CAMBIAR_CONTRASEÑA(?,?)";
+        String sql = "call P_USUARIO_CAMBIAR_CONTRASEÑA(?,?)";
 
         try {
             //crear la sentencia preparada
@@ -220,7 +203,7 @@ public class UsuarioDAO {
             res = ps.executeUpdate();
 
         } catch (SQLException sqle) {
-            System.out.println("Error en actualizar ");
+            System.out.println("Error en actualizar contraseña");
             System.out.println(sqle.getMessage());
         } finally {
             try {

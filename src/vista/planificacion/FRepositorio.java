@@ -8,9 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -34,33 +32,17 @@ public class FRepositorio extends javax.swing.JInternalFrame {
     Archivo archivoLoc = null;
     Thread proc;
     ArrayList<Archivo> lstArchivos;
+    ArrayList<Archivo> lstArchivosSubir;
     ArchivoDAO docDAO = new ArchivoDAO();
 
     public FRepositorio(Usuario usuLog) {
         initComponents();
-        //setExtendedState(JFrame.MAXIMIZED_BOTH);
-        //agregarDocumetos();
         this.usuLog = usuLog;
         actualizarDatosLog();
-        iniciarFechaHora();
-        consultarArchivos();
-    }
-
-    private void iniciarFechaHora() {
-        String strDateFormat = "yyyy-MM-dd HH:mm:ss"; // El formato de fecha está especificado  
-        SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
-
-        proc = new Thread(() -> {
-            while (true) {
-                lbbFechaDato.setText(objSDF.format(new Date()));
-            }
-        });
-        proc.start();
     }
 
     private void actualizarDatosLog() {
         setTitle("VENTANA REPOSITORIO - " + usuLog.getUsuario());
-        lblNombreLogDato.setText(usuLog.getNombre());
     }
 
     private void consultarArchivos() {
@@ -247,15 +229,11 @@ public class FRepositorio extends javax.swing.JInternalFrame {
         }
     }
 
-    private void cargarArchivos() {
+    private void buscarrArchivos() {
         JFileChooser VENTANA_ARCHIVO;
         File[] ARCHIVOS;
-//-------DEFINICMOS EL TIPO DE ARCHIVOS Y DIRECCION EN DONDE SE ABRIRA EL ARCHIVO--------------/
-        VENTANA_ARCHIVO = new JFileChooser();
-        //ImagePreviewPanel preview = new ImagePreviewPanel();
 
-        //MI_ARCHIVO.setAccessory (preview);
-        //MI_ARCHIVO.addPropertyChangeListener (preview);
+        VENTANA_ARCHIVO = new JFileChooser();
         VENTANA_ARCHIVO.setDialogTitle("BUSCAR ARCHIVOS");
         FileNameExtensionFilter filtroDoc = new FileNameExtensionFilter("Documento", "doc", "docx", "xls", "xlsx", "dwg", "txt", "pdf");
         FileNameExtensionFilter filtroImg = new FileNameExtensionFilter("Imagen", "png", "jpg", "jpeg", "bmp");
@@ -263,7 +241,7 @@ public class FRepositorio extends javax.swing.JInternalFrame {
         VENTANA_ARCHIVO.setFileFilter(filtroDoc);
         VENTANA_ARCHIVO.addChoosableFileFilter(filtroImg);
         VENTANA_ARCHIVO.setMultiSelectionEnabled(true);
-        int resultado = VENTANA_ARCHIVO.showOpenDialog(null);
+        VENTANA_ARCHIVO.showOpenDialog(null);
         // muestra error si es inválido
         ARCHIVOS = VENTANA_ARCHIVO.getSelectedFiles();
 
@@ -274,65 +252,45 @@ public class FRepositorio extends javax.swing.JInternalFrame {
             DefaultListModel modelo = new DefaultListModel();
             lstTitulos.setModel(modelo);
 
-            String usuario = usuLog.getNombre();
+            lstArchivosSubir = new ArrayList<>();
+
+            String usuario = usuLog.getUsuario();
 
             for (File file : ARCHIVOS) {
                 String nombre = file.getName().substring(0, file.getName().indexOf("."));
                 String ext = file.getName().substring(file.getName().indexOf(".") + 1, file.getName().length());
                 long TamañoB = file.length();
                 String rutaOrigen = file.getAbsolutePath();
-                
+
                 modelo.addElement(file.getName());
-                
+
                 Archivo arcSubir = new Archivo();
                 arcSubir.setTitulo(nombre);
                 arcSubir.setTamañoBytes(TamañoB);
                 arcSubir.setExtension(ext);
-                //archivo
                 arcSubir.setRuta(rutaOrigen);
                 arcSubir.setUsuario(usuario);
 
                 //AGREGA EL OBJETO ARCHIVO A LA LISTA DE ARCHIVOS PARA INSERTAR EN LA BASE
-                lstArchivos.add(arcSubir);
+                lstArchivosSubir.add(arcSubir);
             }
         }
     }
 
-    private void agregarArchivos() {
-
-        //Archivo archivoInsert = new Archivo(0, titulo, extension, peso, usuario, fecha, ruta);
+    private void insertarArchivos() {
         ArchivoDAO docDAO = new ArchivoDAO();
-        int cont = 10;
-        Thread hPro = null;
-        hPro = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-
-                    procesar(cont, lstArchivos.size());
-                }
-            }
-        });
-
-        hPro.start();
-
-        for (Archivo archivoInsert : lstArchivos) {
-            archivoInsert.setFecha(lbbFechaDato.getText());
-            if (docDAO.guardarArchivo(archivoInsert) == 1) {
-                //JOptionPane.showMessageDialog(this, "Se guardo correctamente", "GUARDAR ARCHIVO", JOptionPane.INFORMATION_MESSAGE);
-            } else {
+        for (Archivo archivoInsert : lstArchivosSubir) {
+            if (docDAO.insertarArchivo(archivoInsert) != 1) {
                 JOptionPane.showMessageDialog(this, "Error al ingresar archivo", "GUARDAR ARCHIVO", JOptionPane.ERROR_MESSAGE);
             }
         }
-        hPro.stop();
+        lstTitulos.removeAll();
     }
 
-    private void procesar(int valorIni, int valorMax) {
-        int cont = valorIni / valorMax;
-        barProceso.setValue(cont);
-        barProceso.validate();
+    private void limpiarLista(){
+        ((DefaultListModel)lstTitulos.getModel()).removeAllElements();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -345,12 +303,7 @@ public class FRepositorio extends javax.swing.JInternalFrame {
         panel_principal = new javax.swing.JPanel();
         panel_titulo = new javax.swing.JPanel();
         lbtTitulo = new javax.swing.JLabel();
-        lblNombreLogDato = new javax.swing.JLabel();
-        lbbFechaDato = new javax.swing.JLabel();
-        lblNombreLog = new javax.swing.JLabel();
-        lbbFecha = new javax.swing.JLabel();
         panel_datos = new javax.swing.JPanel();
-        btnBuscarArchivo = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstTitulos = new javax.swing.JList<>();
         barProceso = new javax.swing.JProgressBar();
@@ -360,6 +313,7 @@ public class FRepositorio extends javax.swing.JInternalFrame {
         btnAgregar = new rojeru_san.RSButton();
         btnEliminar = new rojeru_san.RSButton();
         btnConsultar = new rojeru_san.RSButton();
+        btnBuscarArchivos = new rojeru_san.RSButton();
         scroolRepositorio = new javax.swing.JScrollPane();
         panel_repositorio = new javax.swing.JPanel();
 
@@ -384,58 +338,20 @@ public class FRepositorio extends javax.swing.JInternalFrame {
         lbtTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/repositorio16.png"))); // NOI18N
         lbtTitulo.setText("REPOSITORIO DE ARCHIVOS");
 
-        lblNombreLogDato.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        lblNombreLogDato.setForeground(panel_titulo.getForeground());
-        lblNombreLogDato.setText("Nombre:");
-
-        lbbFechaDato.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        lbbFechaDato.setForeground(panel_titulo.getForeground());
-        lbbFechaDato.setText("Fecha:");
-
-        lblNombreLog.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        lblNombreLog.setForeground(panel_titulo.getForeground());
-        lblNombreLog.setText("Nombre:");
-
-        lbbFecha.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        lbbFecha.setForeground(panel_titulo.getForeground());
-        lbbFecha.setText("Fecha:");
-
         javax.swing.GroupLayout panel_tituloLayout = new javax.swing.GroupLayout(panel_titulo);
         panel_titulo.setLayout(panel_tituloLayout);
         panel_tituloLayout.setHorizontalGroup(
             panel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_tituloLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(panel_tituloLayout.createSequentialGroup()
-                        .addComponent(lbbFecha)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbbFechaDato, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(panel_tituloLayout.createSequentialGroup()
-                        .addComponent(lblNombreLog)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblNombreLogDato, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(lbtTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 612, Short.MAX_VALUE)
+                .addComponent(lbtTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 902, Short.MAX_VALUE)
                 .addGap(18, 18, 18))
         );
-
-        panel_tituloLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {lbbFecha, lblNombreLog});
-
         panel_tituloLayout.setVerticalGroup(
             panel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_tituloLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(lbtTitulo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_tituloLayout.createSequentialGroup()
-                        .addGroup(panel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblNombreLog)
-                            .addComponent(lblNombreLogDato))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panel_tituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lbbFechaDato)
-                            .addComponent(lbbFecha))))
+                .addComponent(lbtTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -445,13 +361,6 @@ public class FRepositorio extends javax.swing.JInternalFrame {
         panel_datos.setForeground(new java.awt.Color(255, 255, 255));
         panel_datos.setOpaque(false);
         panel_datos.setPreferredSize(new java.awt.Dimension(300, 464));
-
-        btnBuscarArchivo.setText("Buscar archivos");
-        btnBuscarArchivo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarArchivoActionPerformed(evt);
-            }
-        });
 
         lstTitulos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "ARCHIVOS CARGADOS", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 11))); // NOI18N
         jScrollPane1.setViewportView(lstTitulos);
@@ -532,6 +441,18 @@ public class FRepositorio extends javax.swing.JInternalFrame {
             }
         });
 
+        btnBuscarArchivos.setBackground(new java.awt.Color(255, 255, 255));
+        btnBuscarArchivos.setForeground(new java.awt.Color(0, 112, 192));
+        btnBuscarArchivos.setText("Buscar archivos");
+        btnBuscarArchivos.setColorHover(new java.awt.Color(0, 112, 192));
+        btnBuscarArchivos.setColorText(new java.awt.Color(0, 112, 192));
+        btnBuscarArchivos.setFont(new java.awt.Font("Roboto Bold", 1, 12)); // NOI18N
+        btnBuscarArchivos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarArchivosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel_datosLayout = new javax.swing.GroupLayout(panel_datos);
         panel_datos.setLayout(panel_datosLayout);
         panel_datosLayout.setHorizontalGroup(
@@ -539,24 +460,25 @@ public class FRepositorio extends javax.swing.JInternalFrame {
             .addGroup(panel_datosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscarArchivo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_datosLayout.createSequentialGroup()
-                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
-                    .addComponent(barProceso, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(btnBuscarArchivos, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
+                    .addGroup(panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_datosLayout.createSequentialGroup()
+                            .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                        .addComponent(barProceso, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addGap(18, 18, 18))
         );
         panel_datosLayout.setVerticalGroup(
             panel_datosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_datosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnBuscarArchivo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnBuscarArchivos, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(barProceso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -597,13 +519,10 @@ public class FRepositorio extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnBuscarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarArchivoActionPerformed
-        cargarArchivos();
-    }//GEN-LAST:event_btnBuscarArchivoActionPerformed
-
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        agregarArchivos();
+        insertarArchivos();
         consultarArchivos();
+        limpiarLista();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -624,19 +543,19 @@ public class FRepositorio extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtCriterioKeyPressed
 
+    private void btnBuscarArchivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarArchivosActionPerformed
+        buscarrArchivos();
+    }//GEN-LAST:event_btnBuscarArchivosActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JProgressBar barProceso;
     private rojeru_san.RSButton btnAgregar;
-    private javax.swing.JButton btnBuscarArchivo;
+    private rojeru_san.RSButton btnBuscarArchivos;
     private rojeru_san.RSButton btnConsultar;
     private rojeru_san.RSButton btnEliminar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbEncontrados;
-    private javax.swing.JLabel lbbFecha;
-    private javax.swing.JLabel lbbFechaDato;
-    private javax.swing.JLabel lblNombreLog;
-    private javax.swing.JLabel lblNombreLogDato;
     private javax.swing.JLabel lbtTitulo;
     private javax.swing.JList<String> lstTitulos;
     private javax.swing.JPanel panel_datos;
